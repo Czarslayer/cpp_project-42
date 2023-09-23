@@ -15,4 +15,5 @@ class Phonebook
         
     private:
         Contact contacts[8];
+        int i;
 };

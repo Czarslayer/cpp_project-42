@@ -16,8 +16,8 @@ int main(void)
             phonebook.addContact();
         else if (command == "SEARCH")
             phonebook.searchContact();
-        else if (command == "PRINT")
-            phonebook.print();
+        else if (command == "EXIT")
+            break;
         else
             std::cout << "Invalid command" << std::endl;
     }
