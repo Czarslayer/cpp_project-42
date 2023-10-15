@@ -11,3 +11,27 @@
 # **************************************************************************** #
 
 
+NAME = ex00
+
+SRCS = main.cpp \
+		newZombie.cpp \
+		randomChump.cpp \
+
+OBJS = $(SRCS:.cpp=.o)
+
+CXX = c++
+
+CXXFLAGS = -Wall -Wextra -Werror
+
+all: $(NAME)
+
+$(NAME): $(OBJS)
+	$(CXX) $(CXXFLAGS) $(OBJS) -o $(NAME)
+
+clean:
+	rm -rf $(OBJS)
+
+fclean: clean
+	rm -rf $(NAME)
+
+re: fclean all

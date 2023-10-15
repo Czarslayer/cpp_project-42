@@ -6,7 +6,7 @@
 /*   By: mabahani <mabahani@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 16:12:45 by mabahani          #+#    #+#             */
-/*   Updated: 2023/10/03 16:12:49 by mabahani         ###   ########.fr       */
+/*   Updated: 2023/10/11 23:52:37 by mabahani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,14 @@
 void Phonebook::initialize(void)
 {
     i = 0;
-}
+};
+
+int Phonebook::wspacecheck(std::string str)
+{
+    if (str.find_first_not_of(" \t\n\v\f\r") == std::string::npos)
+        return 0;
+    return 1;
+};
 
 std::string Phonebook::returninput(std::string message){
     std::string input;
@@ -26,6 +33,10 @@ std::string Phonebook::returninput(std::string message){
             exit(1);
         if (input.empty()) {
            std::cout << "Invalid input" << std::endl;
+        }
+        else if (wspacecheck(input) == 0) {
+            std::cout << "Invalid input" << std::endl;
+            input.clear();
         }
     } 
     std::cout << "\033[2J\033[H";
@@ -39,16 +50,16 @@ void Phonebook::addContact(void)
     contacts[i % 8].setFirstName(returninput("Please provide the first name of your contact:"));
     contacts[i % 8].setLastName(returninput("Please provide the last name of your contact:"));
     contacts[i % 8].setNickname(returninput("Please provide the nickname of your contact:"));
-    while (str.length() != 10 || str.find_first_not_of("0123456789") != std::string::npos) {
-        str = returninput("Please provide the phone number of your contact (10 digits):");
-        if (str.length() != 10 || str.find_first_not_of("0123456789") != std::string::npos) {
+    while (str.find_first_not_of("0123456789") != std::string::npos) {
+        str = returninput("Please provide the phone number of your contact:");
+        if (str.find_first_not_of("0123456789") != std::string::npos) {
             std::cout << "Invalid input" << std::endl;
         }
     }
     contacts[i % 8].setPhoneNumber(str);
     contacts[i % 8].setDarkestSecret(returninput("Please provide the darkest secret of your contact:"));
     i++;
-}
+};
 
 void Phonebook::searchContact()
 {
@@ -88,7 +99,7 @@ void Phonebook::searchContact()
     std::cout << "Last name   : [" << contacts[indexInt].getLastName() << "]" << std::endl;
     std::cout << "Nickname    : [" << contacts[indexInt].getNickname() << "]" << std::endl;
     std::cout << "Phone number: [" << contacts[indexInt].getPhoneNumber() << "]" << std::endl;
-}
+};
 
 void Phonebook::printer(std::string name)
 {
@@ -96,6 +107,6 @@ void Phonebook::printer(std::string name)
         std::cout << name.substr(0, 9) << ".";
     else
         std::cout << std::setw(10) << name;
-}
+};
 
 

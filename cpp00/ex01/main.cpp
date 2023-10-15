@@ -6,7 +6,7 @@
 /*   By: mabahani <mabahani@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 16:13:03 by mabahani          #+#    #+#             */
-/*   Updated: 2023/10/03 16:13:04 by mabahani         ###   ########.fr       */
+/*   Updated: 2023/10/10 21:44:24 by mabahani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ int main(void)
 {
     Phonebook phonebook;
     std::string command;
-    std::cout << "--->  wellcome to the phonebook  <---" << std::endl;
+    std::cout << "\033[2J\033[H";
+    std::cout << "--->  well come to the phonebook  <---" << std::endl;
     std::cout << "---> Commands: ADD, SEARCH, EXIT <---" << std::endl;
 
     while (1)
