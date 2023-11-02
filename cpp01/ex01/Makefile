@@ -13,7 +13,7 @@
 NAME = ex01
 
 SRCS = main.cpp \
-		zombieHord.cpp \
+		zombieHorde.cpp \
 		Zombie.cpp
 
 OBJS = $(SRCS:.cpp=.o)
