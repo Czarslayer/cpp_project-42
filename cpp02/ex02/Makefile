@@ -1,5 +1,5 @@
 
-Name = ex00
+Name = ex02
 
 CXX = c++
 
