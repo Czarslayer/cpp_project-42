@@ -2,10 +2,6 @@
 
 bool bsp( Point const a, Point const b, Point const c, Point const point)
 {
-    /* if the point is inside the triangle,
-     * the sum of the areas of the triangles formed by
-     * the point and each side of the triangle abc
-     is equal to the area of the triangle abc */
     Fixed areaABC = Point::abs((a.getX() * (b.getY() - c.getY()) + b.getX() * (c.getY() - a.getY()) + c.getX() * (a.getY() - b.getY())));
     Fixed areaABP = Point::abs((a.getX() * (b.getY() - point.getY()) + b.getX() * (point.getY() - a.getY()) + point.getX() * (a.getY() - b.getY())));
     Fixed areaACP = Point::abs((a.getX() * (point.getY() - c.getY()) + point.getX() * (c.getY() - a.getY()) + c.getX() * (a.getY() - point.getY())));

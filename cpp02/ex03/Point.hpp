@@ -16,8 +16,8 @@ public:
     // abs()
     static Fixed abs(const Fixed &fixed);
 private:
-    Fixed _x;
-    Fixed _y;
+    const Fixed _x;
+    const Fixed _y;
 };
 
 std::ostream &operator<<(std::ostream &out, const Point &point);

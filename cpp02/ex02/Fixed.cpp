@@ -79,11 +79,15 @@ bool Fixed::operator!=(const Fixed &fixed) const {
 }
 
 Fixed Fixed::operator+(const Fixed &fixed) const {
-    return _value + fixed.getRawBits();
+    Fixed tmp;
+    tmp.setRawBits(_value + fixed.getRawBits());
+    return tmp;
 }
 
 Fixed Fixed::operator-(const Fixed &fixed) const {
-    return _value + fixed.getRawBits();
+    Fixed tmp;
+    tmp.setRawBits(_value - fixed.getRawBits());
+    return tmp;
 }
 
 Fixed Fixed::operator*(const Fixed &fixed) const {
