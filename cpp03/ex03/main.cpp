@@ -1,15 +1,13 @@
-#include "FragTrap.hpp"
+#include "DiamondTrap.hpp"
 
 int main()
 {
-    FragTrap fragTrap;
-    FragTrap fragTrapCopy(fragTrap);
-    FragTrap fragTrapAssignation;
-    fragTrapAssignation = fragTrapCopy;
-
-    fragTrap.attack("target");
-    fragTrap.takeDamage(30);
-    fragTrap.beRepaired(5);
-    fragTrap.highFivesGuys();
+    DiamondTrap diamondTrap("DiamondTrap");
+    diamondTrap.attack("target");
+    diamondTrap.takeDamage(10);
+    diamondTrap.beRepaired(10);
+    diamondTrap.guardGate();
+    diamondTrap.highFivesGuys();
+    diamondTrap.whoAmI();
     return 0;
 }
