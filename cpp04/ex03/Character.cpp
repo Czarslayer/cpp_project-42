@@ -66,13 +66,16 @@ void Character::ADD_to_g_inventory(AMateria *materia) {
         g_inventory->next = NULL;
         return;
     }
-    while(g_inventory->next != NULL)
-        g_inventory = g_inventory->next;
+
+    s_inventory *current = g_inventory;
+    while(current->next != NULL)
+        current = current->next;
+
     s_inventory *new_inventory = new s_inventory;
     new_inventory->materia = materia;
-    new_inventory->idx = 0;
-    new_inventory->next = g_inventory;
-    g_inventory = new_inventory;
+    new_inventory->next = NULL;
+
+    current->next = new_inventory;
 }
 
 void Character::unequip(int idx) {

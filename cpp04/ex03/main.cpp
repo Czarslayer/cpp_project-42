@@ -14,7 +14,7 @@ int main()
     tmp = src->createMateria("ice");
     tmp->use(*me);
     me->equip(tmp);
-    //tmp = src->createMateria("ice");
+    tmp = src->createMateria("ice");
     me->equip(tmp);
     tmp = src->createMateria("cure");
     me->equip(tmp);

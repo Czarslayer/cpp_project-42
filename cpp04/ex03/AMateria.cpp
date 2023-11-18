@@ -20,7 +20,6 @@ AMateria &AMateria::operator=(const AMateria &copy) {
 }
 
 void AMateria::use(ICharacter &target) {
-    std::cout << "czar zaml"<< std::endl;
     (void)target;
 }
 
