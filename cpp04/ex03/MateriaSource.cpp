@@ -29,7 +29,6 @@ void MateriaSource::learnMateria(AMateria *materia)
 {
     if(materia == NULL)
         return;
-   // Character::ADD_to_g_inventory(materia);
     int i = 0;
     while(i < 4 && this->materia[i] != NULL)
         i++;

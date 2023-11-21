@@ -13,12 +13,12 @@ class Character : public ICharacter
         Character();
         Character(std::string name);
         Character(const Character &copy);
-        virtual ~Character();
+        ~Character();
         Character &operator=(const Character &copy);
-        virtual std::string const & getName() const;
-        virtual void equip(AMateria* material);
-        virtual void unequip(int idx);
-        virtual void use(int idx, ICharacter& target);
+        std::string const & getName() const;
+        void equip(AMateria* material);
+        void unequip(int idx);
+        void use(int idx, ICharacter& target);
         void ADD_to_g_inventory(AMateria* materia);
 };
 
