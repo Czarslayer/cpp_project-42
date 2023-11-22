@@ -17,7 +17,6 @@ int main()
     tmp = src->createMateria("cure");
     me->equip(tmp);
     me->equip(tmp);
-
     ICharacter* bob = new Character("bob");
     bob->equip(tmp);
     me->use(0, *bob);

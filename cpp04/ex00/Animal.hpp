@@ -14,7 +14,7 @@ class Animal
         virtual ~Animal();
         Animal &operator=(const Animal &copy);
         std::string getType() const;
-        void makeSound() const;
+        virtual void makeSound() const;
 };
-
+// -fdump-lang-class
 #endif
