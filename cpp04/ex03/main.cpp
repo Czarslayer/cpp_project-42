@@ -16,13 +16,11 @@ int main()
     me->equip(tmp);
     tmp = src->createMateria("cure");
     me->equip(tmp);
-    me->equip(tmp);
     ICharacter* bob = new Character("bob");
     bob->equip(tmp);
     me->use(0, *bob);
     me->use(1, *bob);
-    delete bob;
-    delete src;
     delete me;
+    delete src;
     return 0;
 }

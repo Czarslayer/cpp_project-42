@@ -2,12 +2,9 @@
 
 int main()
 {
-    DiamondTrap diamondTrap("DiamondTrap");
-    diamondTrap.attack("target");
-    diamondTrap.takeDamage(10);
-    diamondTrap.beRepaired(10);
-    diamondTrap.guardGate();
-    diamondTrap.highFivesGuys();
-    diamondTrap.whoAmI();
+    ClapTrap *p = new ClapTrap("ClapTrap");
+    std::cout << sizeof(*p) << std::endl;
+
+    // std::cout << sizeof(int) << std::endl;
     return 0;
 }

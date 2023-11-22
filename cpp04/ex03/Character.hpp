@@ -4,11 +4,19 @@
 #include "AMateria.hpp"
 #include "ICharacter.hpp"
 
+
+struct s_inventory
+{
+    AMateria *materia;
+    s_inventory *next;
+};
+
 class Character : public ICharacter
 {
     private:
         std::string name;
         AMateria *inventory[4];
+        s_inventory *g_inventory = NULL;
     public:
         Character();
         Character(std::string name);

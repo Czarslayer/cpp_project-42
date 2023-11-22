@@ -3,7 +3,8 @@
 
 #include "AMateria.hpp"
 
-class AMateria;
+class AMateria; // whhy is this here? you : "because it's a forward declaration"
+// WHY DO WE NEED IT HERE ITS ALREADY IN AMATERIA.HPP    you : "as u see"
 
 class ICharacter
 {

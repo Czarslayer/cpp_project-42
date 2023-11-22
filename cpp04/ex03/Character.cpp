@@ -1,17 +1,5 @@
 #include "Character.hpp"
 
-struct s_inventory
-{
-    AMateria *materia;
-    int idx;
-    s_inventory *next;
-};
-
-extern s_inventory *g_inventory;
-
-s_inventory *g_inventory = NULL;
-
-
 Character::Character() {
     this->name = "default";
     for (int i = 0; i < 4; i++)
@@ -32,37 +20,22 @@ Character::Character(const Character &copy) {
 
 
 Character::~Character() {
-    s_inventory *current = g_inventory;
-    s_inventory *previous = NULL;
+    // Clean up the inventory array
+    for (int i = 0; i < 4; ++i) {
+        delete inventory[i];
+        inventory[i] = NULL;
+    }
 
+    // Clean up the g_inventory linked list
+    s_inventory *current = g_inventory;
     while (current != NULL) {
         s_inventory *next = current->next;
-
-        bool isDuplicated = false;
-        s_inventory *temp = g_inventory;
-        while (temp != NULL) {
-            if (temp != current && temp->materia == current->materia) {
-                isDuplicated = true;
-                break;
-            }
-            temp = temp->next;
-        }
-
-        if (isDuplicated) {
-            if (previous != NULL) {
-                previous->next = next;
-            } else {
-                g_inventory = next;
-            }
-            delete current;
-        } else {
-            delete current->materia;
-            delete current;
-        }
+        delete current->materia;
+        delete current;
         current = next;
     }
 
-    g_inventory = NULL;
+    g_inventory = NULL; // Reset the g_inventory pointer after cleanup
 }
 
 Character &Character::operator=(const Character &copy) {
