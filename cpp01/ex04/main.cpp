@@ -20,8 +20,6 @@
 int main(int ac, char **av) {
     size_t found = 0;
     if(ac == 4) {
-        
-
         std::ifstream inputFile(av[1]);
         if (!inputFile.is_open()) {
             std::cerr << "Failed to open the input file Make sure the file:" << "make sure ["<< av[1] << "] exist." << std::endl;
