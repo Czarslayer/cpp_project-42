@@ -1,5 +1,8 @@
 #include "Bureaucrat.hpp"
-#include "Form.hpp"
+#include "AForm.hpp"
+#include "PresidentialPardonForm.hpp"
+#include "RobotomyRequestForm.hpp"
+#include "ShrubberyCreationForm.hpp"
 
 int main()
 {
@@ -41,15 +44,6 @@ int main()
         bur.incrementGrade();
         std::cout << bur << std::endl;
         bur.incrementGrade();
-    } catch (std::exception &e) {
-        std::cout << e.what() << std::endl;
-    }
-    std::cout << "-------------------------------------" << std::endl;
-
-    try {
-        Bureaucrat bur("morad", 1);
-        Form form("form", 1, 1);
-        form.beSigned(bur);
     } catch (std::exception &e) {
         std::cout << e.what() << std::endl;
     }

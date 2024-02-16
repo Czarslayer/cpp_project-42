@@ -25,16 +25,20 @@ public:
     int getGradeToExecute() const;
     void beSigned(Bureaucrat &bur);
     class GradeTooHighException : public std::exception {
-    public:
-        const char *what() const throw() {
-            return ("i think it's too high");
-        }
+        public:
+            virtual const char* what() const throw(){
+                return ("Grade too high");
+            }
     };
-
     class GradeTooLowException : public std::exception {
-    public:
-        const char *what()  const throw(){
-            return ("i think it's too low");
-        }
+        public:
+            virtual const char* what() const throw()
+            {
+                return ("Grade too low");
+            }
     };
 };
+
+std::ostream &operator<<(std::ostream &out, Form const &form);
+
+#endif
