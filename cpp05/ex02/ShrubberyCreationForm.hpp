@@ -24,9 +24,7 @@ public:
 
     class FileNotOpenException : public std::exception {
     public:
-        virtual const char *what() const throw() {
-            return "File not open";
-        }
+        virtual const char *what() const throw();
     };
 };
 

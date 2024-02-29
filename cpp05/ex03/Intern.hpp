@@ -23,9 +23,7 @@ public:
 
 	class FormNotFoundException : public std::exception {
 		public:
-			virtual const char* what() const throw(){
-				return ("Form not found");
-			}
+			virtual const char* what() const throw();
 	};
 };
 

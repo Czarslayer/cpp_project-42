@@ -41,3 +41,7 @@ void ShrubberyCreationForm::execute(Bureaucrat const &executor) const {
 	file << std::endl;
     file.close();
 }
+
+const char *ShrubberyCreationForm::FileNotOpenException::what() const throw() {
+	return "File not open";
+}

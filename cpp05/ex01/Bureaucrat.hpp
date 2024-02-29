@@ -28,16 +28,12 @@ public:
     void signForm(Form &form);
     class GradeTooHighException : public std::exception {
     public:
-        const char *what() const throw() {
-            return ("i think it's too high");
-        }
+        const char *what() const throw();
     };
 
     class GradeTooLowException : public std::exception {
     public:
-        const char *what()  const throw(){
-            return ("i think it's too low");
-        }
+        const char *what()  const throw();
     };
 };
 

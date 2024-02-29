@@ -42,3 +42,7 @@ AForm *Intern::makeForm(std::string const &name, std::string const &target) {
     std::cout << "Intern can't create " << name << " form" << std::endl;
 	throw FormNotFoundException();
 }
+
+const char* Intern::FormNotFoundException::what() const throw() {
+	return "Form not found";
+}

@@ -1,5 +1,6 @@
 #ifndef SHRUBBERYCREATIONFORM_HPP
 # define SHRUBBERYCREATIONFORM_HPP
+
 #include "AForm.hpp"
 #include "Bureaucrat.hpp"
 
@@ -23,9 +24,7 @@ public:
 
     class FileNotOpenException : public std::exception {
     public:
-        virtual const char *what() const throw() {
-            return "File not open";
-        }
+        virtual const char *what() const throw();
     };
 };
 
