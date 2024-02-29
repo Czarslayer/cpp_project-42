@@ -38,7 +38,7 @@ void    Bureaucrat::incrementGrade() {
 
 void    Bureaucrat::decrementGrade() {
     std::cout << "you just called the decrement function" << std::endl;
-    if(_grade + 1 < 150)
+    if(_grade + 1 <= 150)
         _grade += 1;
     else
         throw GradeTooLowException();

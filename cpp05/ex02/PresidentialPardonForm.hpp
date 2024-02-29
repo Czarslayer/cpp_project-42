@@ -1,3 +1,5 @@
+#ifndef PRESIDENTIALPARDONFORM_HPP
+# define PRESIDENTIALPARDONFORM_HPP
 #include "AForm.hpp"
 #include "Bureaucrat.hpp"
 
@@ -16,3 +18,5 @@ public:
     std::string const getTarget() const;
     void execute(Bureaucrat const &executor) const;
 };
+
+#endif

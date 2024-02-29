@@ -7,62 +7,46 @@
 
 int main()
 {
-    try
-    {
-        Bureaucrat bur("morad", 0);
-        std::cout << bur << std::endl;
-    }
-    catch (std::exception &e)
-    {
-        std::cout << e.what() << std::endl;
-    }
-    std::cout << "-------------------------------------" << std::endl;
-    try
-    {
-        Bureaucrat bur("morad", 151);
-        std::cout << bur << std::endl;
-    }
-    catch (std::exception &e)
-    {
-        std::cout << e.what() << std::endl;
-    }
-    std::cout << "-------------------------------------" << std::endl;
-    try
-    {
-        Bureaucrat bur("morad", 150);
-        std::cout << bur << std::endl;
-        bur.incrementGrade();
-        std::cout << bur << std::endl;
-        bur.decrementGrade();
-        std::cout << bur << std::endl;
-        bur.decrementGrade();
-        std::cout << bur << std::endl;
-        bur.decrementGrade();
-    }
-    catch (std::exception &e)
-    {
-        std::cout << e.what() << std::endl;
-    }
-    std::cout << "-------------------------------------" << std::endl;
-    try
-    {
-        Bureaucrat bur("morad", 1);
-        std::cout << bur << std::endl;
-        bur.incrementGrade();
-        std::cout << bur << std::endl;
-        bur.incrementGrade();
-        std::cout << bur << std::endl;
-        bur.incrementGrade();
-        std::cout << bur << std::endl;
-        bur.incrementGrade();
-    }
-    catch (std::exception &e)
-    {
-        std::cout << e.what() << std::endl;
-    }
-    Intern someRandomIntern;
-    AForm *rrf;
-    rrf = someRandomIntern.makeForm("robotomy request", "Bender");
-    std::cout << *rrf << std::endl;
-    std::cout << "-------------------------------------" << std::endl;
+   // esting PresidentialPardonForm
+   std::cout << RED << "------<<testing PresidentialPardonForm>>------" << RESET << std::endl;
+   try {
+	   Bureaucrat bur("morad", 2);
+	   std::cout << bur << std::endl;
+	   PresidentialPardonForm form("target");
+	   bur.signForm(form);
+	   bur.executeForm(form);
+   } catch (std::exception &e) {
+	   std::cout << e.what() << std::endl;
+   }
+   std::cout << RED << "------<<testing shurbbery>>------" << RESET << std::endl;
+   try {
+	   Bureaucrat bur("morad", 2);
+	   std::cout << bur << std::endl;
+	   ShrubberyCreationForm form("target");
+	   bur.signForm(form);
+	   bur.executeForm(form);
+   } catch (std::exception &e) {
+	   std::cout << e.what() << std::endl;
+   }
+   std::cout << RED << "------<<testing RobotomyRequestForm>>------" << RESET << std::endl;
+   try {
+	   Bureaucrat bur("morad", 2);
+	   std::cout << bur << std::endl;
+	   RobotomyRequestForm form("target");
+	   bur.signForm(form);
+	   bur.executeForm(form);
+   } catch (std::exception &e) {
+	   std::cout << e.what() << std::endl;
+   }
+   std::cout << RED << "------<<testing intern>>------" << RESET << std::endl;
+   try {
+	   Intern intern;
+	   AForm *form = intern.makeForm("presiden=on", "target");
+	   Bureaucrat bur("morad", 2);
+	   std::cout << bur << std::endl;
+	   bur.signForm(*form);
+	   bur.executeForm(*form);
+   } catch (std::exception &e) {
+	   std::cout << e.what() << std::endl;
+   }
 }

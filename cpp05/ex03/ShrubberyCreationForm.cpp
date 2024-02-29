@@ -3,8 +3,7 @@
 ShrubberyCreationForm::ShrubberyCreationForm(std::string const &target) : AForm("ShrubberyCreationForm", 145, 137), _target(target) {
 }
 
-ShrubberyCreationForm::ShrubberyCreationForm(ShrubberyCreationForm const &copy) : AForm(copy) {
-    *this = copy;
+ShrubberyCreationForm::ShrubberyCreationForm(ShrubberyCreationForm const &copy) : AForm(copy), _target(copy._target) {
 }
 
 ShrubberyCreationForm::~ShrubberyCreationForm() {
@@ -23,30 +22,22 @@ std::string const ShrubberyCreationForm::getTarget() const {
 void ShrubberyCreationForm::execute(Bureaucrat const &executor) const {
     AForm::execute(executor);
     std::ofstream file;
-    file.open(std::string(this->getTarget()).append("_shrubbery").c_str());
-    if (!file.is_open())
+    file.open(std::string(this->getTarget()).append("_shrubbery").c_str(), std::ios::out | std::ios::trunc);
+    if (!file.is_open()){
         throw ShrubberyCreationForm::FileNotOpenException();
-    file << "      /\\      " << std::endl;
-    file << "     /\\*\\     " << std::endl;
-    file << "    /\\O\\*\\    " << std::endl;
-    file << "   /*/\\/\\/\\   " << std::endl;
-    file << "  /\\O\\/\\*\\/\\  " << std::endl;
-    file << " /\\*\\/\\*\\/\\/\\ " << std::endl;
-    file << "/\\O\\/\\/*/\\/O/\\" << std::endl;
-    file << "      ||      " << std::endl;
-    file << "      ||      " << std::endl;
-    file << "      ||      " << std::endl;
-    file << std::endl;
-    file << "      ||      " << std::endl;
-    file << "      ||      " << std::endl;
-    file << "      ||      " << std::endl;
-    file << std::endl;
-    file << "      ||      " << std::endl;
-    file << "      ||      " << std::endl;
-    file << "      ||      " << std::endl;
-    file << std::endl;
-    file << "      ||      " << std::endl;
-    file << "      ||      " << std::endl;
-    file << "      ||      " << std::endl;
+	}
+	file << "       / \\" << std::endl;
+	file << "      / * \\" << std::endl;
+	file << "     / *** \\" << std::endl;
+	file << "    / ***** \\" << std::endl;
+	file << "   / ******* \\" << std::endl;
+	file << "  / ********* \\" << std::endl;
+	file << " / *********** \\" << std::endl;
+	file << "/ ************* \\" << std::endl;
+	file << "      ||||    " << std::endl;
+	file << "  O   |O||    " << std::endl;
+	file << "  |   ||||    " << std::endl;
+	file << ";:;l;::;;l:l;:;l;l" << std::endl;
+	file << std::endl;
     file.close();
 }

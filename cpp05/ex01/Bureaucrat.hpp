@@ -5,6 +5,11 @@
 # include <string>
 #include "Form.hpp"
 
+#define RED "\033[31m"
+#define RESET "\033[0m"
+
+class Form;
+
 class Bureaucrat {
 private:
     std::string const _name;
