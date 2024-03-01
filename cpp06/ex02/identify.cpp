@@ -23,19 +23,29 @@ void identify_from_pointer(Base *p)
 
 void identify_from_reference(Base &p)
 {
-    try{
-        throw p;
-    }
-    catch (A &a)
-    {
-        std::cout << "A" << std::endl;
-    }
-    catch (B &b)
-    {
-        std::cout << "B" << std::endl;
-    }
-    catch (C &c)
-    {
-        std::cout << "C" << std::endl;
-    }
+	try{
+		A &a = dynamic_cast<A &>(p);
+		(void)a;
+		std::cout << "A" << std::endl;
+	}
+	catch (std::bad_cast &bc)
+	{
+		try{
+			B &b = dynamic_cast<B &>(p);
+			(void)b;
+			std::cout << "B" << std::endl;
+		}
+		catch (std::bad_cast &bc)
+		{
+			try{
+				C &c = dynamic_cast<C &>(p);
+				(void)c;
+				std::cout << "C" << std::endl;
+			}
+			catch (std::bad_cast &bc)
+			{
+				std::cerr << "Error: " << bc.what() << std::endl;
+			}
+		}
+	}
 }

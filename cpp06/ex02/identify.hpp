@@ -6,8 +6,8 @@
 #include <sstream>
 #include <stdint.h>
 #include <time.h>
-//srand
 #include <stdlib.h>
+#include <typeinfo>
 
 class Base
 {

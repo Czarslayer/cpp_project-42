@@ -33,25 +33,25 @@ void ScalarConversion::convertInt() {
 }
 
 void ScalarConversion::convertFloat() {
-    std::cout << "float: ";
-    try {
-        float f = static_cast<float>(atof(this->_input.c_str()));
-        std::cout  << f << "f" << std::endl;
-    }
-    catch (std::exception &e) {
-        std::cout << "impossible" << std::endl;
-    }
+	std::cout << "float: ";
+	try {
+		float f = atof(this->_input.c_str());
+		std::cout << std::fixed << std::setprecision(1) << f << "f" << std::endl;
+	}
+	catch (std::exception &e) {
+		std::cout << "impossible" << std::endl;
+	}
 }
 
 void ScalarConversion::convertDouble() {
     std::cout << "double: ";
-    try {
-        double d = atol(this->_input.c_str());
-        std::cout << std::fixed << std::setprecision(1) << d << std::endl;
-    }
-    catch (std::exception &e) {
-        std::cout << "impossible" << std::endl;
-    }
+	try {
+		double d = atof(this->_input.c_str());
+		std::cout << std::fixed << std::setprecision(1) << d << std::endl;
+	}
+	catch (std::exception &e) {
+		std::cout << "impossible" << std::endl;
+	}
 }
 
 void ScalarConversion::convert() {

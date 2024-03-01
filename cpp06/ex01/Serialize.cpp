@@ -26,5 +26,3 @@ Data *Serialize::deserialize(uintptr_t *raw) {
     Data *ptr = reinterpret_cast<Data *>(raw);
     return ptr;
 }
-
-// P
