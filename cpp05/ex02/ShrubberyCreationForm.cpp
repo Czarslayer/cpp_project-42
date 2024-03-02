@@ -20,7 +20,8 @@ std::string const ShrubberyCreationForm::getTarget() const {
 }
 
 void ShrubberyCreationForm::execute(Bureaucrat const &executor) const {
-    AForm::execute(executor);
+    if (executor.getGrade() > this->getGradeToExecute() || this->getSigned() == false)
+		throw AForm::GradeTooLowException();
     std::ofstream file;
     file.open(std::string(this->getTarget()).append("_shrubbery").c_str(), std::ios::out | std::ios::trunc);
     if (!file.is_open()){

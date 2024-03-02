@@ -20,7 +20,7 @@ std::string const RobotomyRequestForm::getTarget() const {
 }
 
 void RobotomyRequestForm::execute(Bureaucrat const &executor) const {
-    if (executor.getGrade() > this->getGradeToExecute())
+    if (executor.getGrade() > this->getGradeToExecute() || this->getSigned() == false)
         throw AForm::GradeTooLowException();
     std::cout << "executing RobotomyRequestForm" << std::endl;
 	std::srand(std::time(0));
