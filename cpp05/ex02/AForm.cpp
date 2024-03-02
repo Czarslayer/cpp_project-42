@@ -46,12 +46,6 @@ void AForm::beSigned(Bureaucrat &bur) {
     this->_signed = true;
 }
 
-void AForm::execute(Bureaucrat const &executor) const {
-    if (executor.getGrade() > this->_gradeToExecute)
-        throw AForm::GradeTooLowException();
-    std::cout << this->getName() << " has been executed" << std::endl;
-}
-
 const char *AForm::GradeTooHighException::what() const throw() {
 	return "Grade too high";
 }
