@@ -35,14 +35,14 @@ void Span::addMultNumbers(std::vector<int>::iterator begin, std::vector<int>::it
 
 int Span::shortestSpan()
 {
-    unsigned int buf;
-    unsigned int size = _v.size();
+    int buf;
+    int size = _v.size();
     if(size == 0 || size == 1)
         throw NoSpanException();
     buf = _v[0];
     for(int i = 0; i < size; i++)
     {
-        for(int j = i + 1; j < size; j++)
+        for(int j = 0; j < size; j++)
         {
             if (_v[i] - _v[j] < buf && (_v[i] - _v[j]) > 0)
             {
@@ -55,14 +55,14 @@ int Span::shortestSpan()
 
 int Span::longestSpan()
 {
-    unsigned int buf;
-    unsigned int size = _v.size();
+    int buf;
+    int size = _v.size();
     if(size == 0 || size == 1)
         throw NoSpanException();
     buf = _v[0];
     for(int i = 0; i < size; i++)
     {
-        for(int j = i + 1; j < size; j++)
+        for(int j = 0; j < size; j++)
         {
             if (_v[i] - _v[j] > buf && (_v[i] - _v[j]) > 0)
             {
