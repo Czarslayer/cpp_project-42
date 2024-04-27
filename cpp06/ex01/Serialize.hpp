@@ -21,8 +21,8 @@ class Serialize
         ~Serialize();
         Serialize(Serialize const &src);
         Serialize &operator=(Serialize const &rhs);
-        uintptr_t serialize(Data *ptr);
-        Data *deserialize(uintptr_t raw);
+        static uintptr_t serialize(Data *ptr);
+        static Data *deserialize(uintptr_t raw);
 };
 
 #endif
