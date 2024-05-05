@@ -16,8 +16,9 @@ struct Data
 
 class Serialize
 {
-    public:
+    private:
         Serialize();
+    public:
         ~Serialize();
         Serialize(Serialize const &src);
         Serialize &operator=(Serialize const &rhs);

@@ -7,35 +7,37 @@
 template <typename T>
 class Array {
 private:
-	T *_arr;
-	unsigned int _size;
+	T *arr;
+	unsigned int arrsize;
 public:
-	Array() : _arr(NULL), _size(0) {}
-	Array(unsigned int n) : _arr(new T[n]), _size(n) {}
-	Array(Array const &copy) : _arr(new T[copy._size]), _size(copy._size) {
-		for (unsigned int i = 0; i < _size; i++)
-			_arr[i] = copy._arr[i];
+	Array() : arr(NULL), arrsize(0) {}
+	Array(unsigned int n) : arr(new T[n]()), arrsize(n) {}
+	Array(Array const &copy) : arr(new T[copy.arrsize]()), arrsize(copy.arrsize) {
+		for (unsigned int i = 0; i < arrsize; i++)
+			arr[i] = copy.arr[i];
 	}
 	~Array() {
-		delete[] _arr;
+		delete[] arr;
 	}
-	Array &operator=(Array const &copy){
+
+	Array &operator=(Array const &copy) {
 		if (this != &copy){
-			delete[] _arr;
-			_arr = new T[copy._size];
-			_size = copy._size;
-			for (unsigned int i = 0; i < _size; i++)
-				_arr[i] = copy._arr[i];
+			delete[] arr;
+			arr = new T[copy.arrsize]();
+			arrsize = copy.arrsize;
+			for (unsigned int i = 0; i < arrsize; i++)
+				arr[i] = copy.arr[i];
 		}
 		return *this;
 	}
-	T &operator[](unsigned int i){
-		if (i >= _size)
+
+	T &operator[](unsigned int i) {
+		if (i >= arrsize)
 			throw OutOfLimits();
-		return _arr[i];
+		return arr[i];
 	}
 	unsigned int size() const{
-		return _size;
+		return arrsize;
 	}
 	class OutOfLimits : public std::exception {
 		virtual const char *what() const throw(){
@@ -43,4 +45,5 @@ public:
 		}
 	};
 };
+
 #endif
