@@ -39,7 +39,7 @@ int Span::shortestSpan()
     int size = _v.size();
     if(size == 0 || size == 1)
         throw NoSpanException();
-    buf = _v[0];
+    buf = _v[0] - _v[1];
     for(int i = 0; i < size; i++)
     {
         for(int j = 0; j < size; j++)
@@ -59,7 +59,7 @@ int Span::longestSpan()
     int size = _v.size();
     if(size == 0 || size == 1)
         throw NoSpanException();
-    buf = _v[0];
+    buf = _v[0] - _v[1];
     for(int i = 0; i < size; i++)
     {
         for(int j = 0; j < size; j++)

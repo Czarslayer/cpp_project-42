@@ -20,12 +20,12 @@ public:
 
     typedef typename std::stack<T>::container_type::iterator iterator;
     
-    typename std::stack<T>::container_type::iterator begin()
+    iterator begin()
     {
         return std::stack<T>::c.begin();
     }
 
-    typename std::stack<T>::container_type::iterator end()
+    iterator end()
     {
         return std::stack<T>::c.end();
     }
