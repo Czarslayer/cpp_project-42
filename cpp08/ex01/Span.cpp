@@ -25,12 +25,16 @@ Span::~Span()
 
 void Span::addNumber(int i)
 {
+    if (_v.size() >= _n)
+        throw NotenoughRoom();
     this->_v.push_back(i);
 }
 
 void Span::addMultNumbers(std::vector<int>::iterator begin, std::vector<int>::iterator end)
 {
-    _v.insert(_v.begin() + _v.size(), begin, end);
+    if (_v.size() + std::distance(begin, end) > _n)
+        throw NotenoughRoom();
+    _v.insert(_v.end(), begin, end);
 }
 
 int Span::shortestSpan()
@@ -39,15 +43,14 @@ int Span::shortestSpan()
     int size = _v.size();
     if(size == 0 || size == 1)
         throw NoSpanException();
-    buf = _v[0] - _v[1];
-    for(int i = 0; i < size; i++)
-    {
-        for(int j = 0; j < size; j++)
-        {
-            if (_v[i] - _v[j] < buf && (_v[i] - _v[j]) > 0)
-            {
-                buf = _v[i] - _v[j];
-            }
+    std::vector <int> v = _v;
+    std::sort(v.begin(), v.end());
+    buf = v[1] - v[0];
+    for(int i = 0; i < size; i++) {
+        if(i + 1 < size) {
+            if(v[i + 1] - v[i] < buf)
+                {buf = v[i + 1] - v[i];
+                std::cout << "buf: " << buf << std::endl;}
         }
     }
     return (buf);
@@ -59,17 +62,9 @@ int Span::longestSpan()
     int size = _v.size();
     if(size == 0 || size == 1)
         throw NoSpanException();
-    buf = _v[0] - _v[1];
-    for(int i = 0; i < size; i++)
-    {
-        for(int j = 0; j < size; j++)
-        {
-            if (_v[i] - _v[j] > buf && (_v[i] - _v[j]) > 0)
-            {
-                buf = _v[i] - _v[j];
-            }
-        }
-    }
+    std::vector<int>::iterator max = std::max_element(_v.begin(), _v.end());
+    std::vector<int>::iterator min = std::min_element(_v.begin(), _v.end());
+    buf = *max - *min;
     return (buf);
 }
 

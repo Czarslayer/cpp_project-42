@@ -23,18 +23,20 @@ class Span
 
         class NotenoughRoom : public std::exception 
         {
-            virtual const char * what() const throw()
-            {
-                return("no no that's out of boundaries");
-            }
+            public:
+                virtual const char * what() const throw()
+                {
+                    return("no no that's out of boundaries");
+                }
         };
 
         class NoSpanException : public std::exception 
         {
-            virtual const char * what() const throw()
-            {
-                return("there's not enough numbers to calculate span");
-            }
+            public:
+                virtual const char * what() const throw()
+                {
+                    return("there's not enough numbers to calculate span");
+                }
         };
 };
 

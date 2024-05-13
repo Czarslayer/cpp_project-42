@@ -25,11 +25,54 @@
 #include <set>
 #include <sstream>
 
+std::vector<int> jacob_index_generator(std::vector<int> &jacobsthals)
+{
+
+    std::vector<int> jacobsthals_indexed;
+    int jacob = 0;
+    for (size_t i = 0; i < jacobsthals.size(); i++)
+    {
+        jacob = jacobsthals[i];
+        jacobsthals_indexed.push_back(jacob);
+        while (jacob > 0 && std::find(jacobsthals_indexed.begin(), jacobsthals_indexed.end(), --jacob) == jacobsthals_indexed.end())
+        {
+            jacobsthals_indexed.push_back(jacob);
+            jacob--;
+        }
+    }
+    // remove one 1 from the beginning of the sequence
+    jacobsthals_indexed.erase(jacobsthals_indexed.begin());
+    return jacobsthals_indexed;
+}
+
+int Jacobsthal(int n)
+{
+    if (n == 0)
+        return 0;
+ 
+    if (n == 1)
+        return 1;
+ 
+    return Jacobsthal(n - 1) + 2 * Jacobsthal(n - 2);
+}
+
 void recursive_sort(std::vector<int> &t, std::vector<std::vector<int> > &couples)
 {
     std::vector<int> couple;
 
+    // Sort each couple largest first then smallest
+    for (size_t i = 0; i < couples.size(); ++i) {
+        if (couples[i][0] < couples[i][1]) {
+            std::swap(couples[i][0], couples[i][1]);
+        }
+    }
+    //test swaping two couple vectors
+     std::swap(couples[0], couples[1]);
+
+    // Continue with the remaining steps of the algorithm
+    // You can implement these steps here recursively
 }
+
 int main(int argc, char const *argv[])
 {
     std::vector<int> t;
@@ -65,26 +108,19 @@ int main(int argc, char const *argv[])
         couple.clear();
         t.pop_back();
     }
-    std::cout << "t.size() = " << t.size() << std::endl;
 
-    // for (size_t i = 0; i < t.size(); i += 2)
-    // {
-    //     if(t[i] < t[i + 1])
-    //     {
-    //         std::cout << "t[i] < t[i + 1]" << std::endl;
-    //         couple.push_back(t[i + 1]);
-    //         couple.push_back(t[i]);
-    //     } else {
-    //         std::cout << "t[i] > t[i + 1]" << std::endl;
-    //         couple.push_back(t[i]);
-    //         couple.push_back(t[i + 1]);
-    //     }
-    //     couples.push_back(couple);
-    //     couple.clear();
-    // }
+    for (size_t i = 0; i < t.size(); i += 2)
+    {
+        couple.push_back(t[i]);
+        couple.push_back(t[i + 1]);
+        couples.push_back(couple);
+        couple.clear();
+    }
+
     // sort couples recursively
     recursive_sort(t, couples);
-    ///debug : print couples
+    
+    // Print couples
     std::cout << "Couples" << std::endl;
     for (size_t i = 0; i < couples.size(); i++)
     {
@@ -103,6 +139,74 @@ int main(int argc, char const *argv[])
         smallest.push_back(couples[i][1]);
         largest.push_back(couples[i][0]);
     }
+
+    // Print smallest and largest
+    std::cout << "Smallest" << std::endl;
+    for (size_t i = 0; i < smallest.size(); i++)
+    {
+        std::cout << smallest[i] << " ";
+    }
+    std::cout << std::endl;
+
+    std::cout << "Largest" << std::endl;
+    for (size_t i = 0; i < largest.size(); i++)
+    {
+        std::cout << largest[i] << " ";
+    }
+    std::cout << std::endl;
+
+    // step 3 : create a Jacobsthal sequence with the lenght of the two sequences combined
+    std::vector<int> jacobsthals;
+    int jacob = 0;
+    for (size_t i = 1; i < smallest.size() + largest.size(); i++)
+    {
+        jacob = Jacobsthal(i);
+        jacobsthals.push_back(jacob);
+    }
+    jacobsthals = jacob_index_generator(jacobsthals);
+
+    // Print jacobian
+    std::cout << "Jacobian" << std::endl;
+    for (size_t i = 0; i < jacobsthals.size(); i++)
+    {
+        std::cout << jacobsthals[i] << " ";
+    }
+    std::cout << std::endl;
+
+    // step 4 : insert the LARGEST sequence using the jacobian sequence to smallest sequence using upper bound and using jacob sequence as index
+    int last_jacobian = 0;
+    for (size_t i = 0; i < jacobsthals.size(); i++)
+    {
+        if (jacobsthals[i] < largest.size())
+        {
+            std::cout << ">>Inserting " << jacobsthals[i] << std::endl;
+            smallest.insert(std::upper_bound(smallest.begin(), smallest.end(), largest[jacobsthals[i]]), largest[jacobsthals[i]]);
+            std::cout << "Inserting " << largest[jacobsthals[i]] << std::endl;
+            std::cout << "Smallest" << std::endl;
+            for (size_t i = 0; i < smallest.size(); i++)
+            {
+                std::cout << smallest[i] << " ";
+            }
+            std::cout << std::endl;
+            std::cout << "===========================================" << std::endl;
+        }
+    }
+
+    // step 5 : insert the STRUGGLING part using upper bound of the LARGEST sequence
+    if (!couple.empty())
+    {
+        std::upper_bound(largest.begin(), largest.end(), couple[0]);
+    }
+
+    // Print smallest
+    std::cout << "Smallest" << std::endl;
+    for (size_t i = 0; i < smallest.size(); i++)
+    {
+        std::cout << smallest[i] << " ";
+    }
+    std::cout << std::endl;
+
+
     
     return 0;
 }

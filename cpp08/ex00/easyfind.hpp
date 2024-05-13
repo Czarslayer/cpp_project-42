@@ -15,7 +15,7 @@ typename T::iterator easyfind(T &container, int value)
 {
     typename T::iterator it = std::find(container.begin(), container.end(), value);
     if (it == container.end())
-        throw "lm9awed";
+        throw "could not find value in container";
     return it;
 }
 
