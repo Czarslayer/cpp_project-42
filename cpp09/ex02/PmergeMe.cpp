@@ -1,21 +1,4 @@
-// the plan is the next :
-// we need to sort a squence of numbers given by user input
-// we will use the merge insert algorithm to sort the numbers also know as ford-johnson algorithm
-// first we need to keep deviding the sequence into two parts until we have only two element in each part if the number of elements is odd we will have one part with one element
-// we'll call it struggling part
 
-// then we need to sort each pair of elements in each part 
-// then we need to create two sequences one for largest elements and one for smallest elements in each part
-// and index them in a way that the largest element in the first part is smaller than the smallest element in the second part
-// so we need to save the index with every number somehow mybe use vectors of structs with two elements one for the number and one for the index
-// afterwe have two sequences we need to create a jacobian sequence with the lenght of the two sequences combined
-// jacobian squence looks like this : 0, 1, 1, 3, 5, 11, 21, 43, 85, 171, 341, 683, 1365, 2731
-// use it like this : jacobian[i] = 2 * jacobian[i - 1] + 1
-
-// now using the original indexing of smallest numbers we start inserting them one by one using the jacobian sequence like this 
-//if we reach index 3 of jacobian we insert the number with index 3 in the smallest sequence followed by everyone lesser than it in the smallest sequence
-// then we go to next index in the jacobian sequence and insert the number with that index in the smallest sequence followed by everyone lesser than it in the smallest sequence
-// until we reach the end of smallest sequence then insert the struggling part using upper bound of the largest sequence
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -81,12 +64,17 @@ std::vector<int> jacob_index_generator(std::vector<int> &jacobsthals)
         jacobsthals_indexed.push_back(jacob);
         while (jacob > 0 && std::find(jacobsthals_indexed.begin(), jacobsthals_indexed.end(), --jacob) == jacobsthals_indexed.end())
         {
+            //std::cout << "pushing " << jacob << std::endl;
             jacobsthals_indexed.push_back(jacob);
-            jacob--;
+            //jacob--;
         }
     }
     // remove one 1 from the beginning of the sequence
     jacobsthals_indexed.erase(jacobsthals_indexed.begin());
+    // for(int j = 0; j < jacobsthals.size(); j++)
+    // {
+    //     std::cout << "index" << j << " is" << jacobsthals[j] << std::endl;
+    // }
     return jacobsthals_indexed;
 }
 
@@ -204,13 +192,13 @@ int main(int argc, char const *argv[])
     jacobsthals = jacob_index_generator(jacobsthals);
 
     // trim the jacobsthals sequence to the size of the smallest sequence run through the sequence and remove any element that is greater than the size of the smallest sequence
-    for (size_t i = 0; i < jacobsthals.size(); i++)
-    {
-        if (jacobsthals[i] >= smallest.size())
-        {
-            jacobsthals.erase(jacobsthals.begin() + i);
-        }
-    }
+    // for (size_t i = 0; i < jacobsthals.size(); i++)
+    // {
+    //     if (jacobsthals[i] >= smallest.size())
+    //     {
+    //         jacobsthals.erase(jacobsthals.begin() + i);
+    //     }
+    // }
 
 
     // Print jacobian
@@ -223,16 +211,17 @@ int main(int argc, char const *argv[])
 
     // step 4 : insert the first element becuase it's the smallest
     largest.insert(std::upper_bound(largest.begin(), largest.end(), smallest[0]), smallest[0]);
+    std::cout << "pushed the smallest " << smallest[0] << std::endl;
 
     // step 5 : insert the LARGEST sequence using the jacobian sequence to smallest sequence using upper bound and using jacob sequence as index
     int last_jacobian = 0;
-    for (size_t i = 1; i < jacobsthals.size(); i++)
+    for (size_t i = 2; i < jacobsthals.size(); i++)
     {
-        std::cout << "Last Jacobian index " << i << std::endl;
+        // std::cout << "Last Jacobian index " << i << std::endl;
         if (jacobsthals[i] < smallest.size())
-        {
+        {// 
             std::cout << ">>Inserting " << jacobsthals[i] << std::endl;
-            largest.insert(std::upper_bound(largest.begin(), largest.end(), smallest[jacobsthals[i]]), smallest[jacobsthals[i]]);
+            largest.insert(std::upper_bound(largest.begin(), largest.begin() + std::pow(2, jacobsthals[i]) - 1 + (i - 2), smallest[jacobsthals[i]]), smallest[jacobsthals[i]]);
             std::cout << "Inserting " << smallest[jacobsthals[i]] << std::endl;
             std::cout << "largest" << std::endl;
             for (size_t i = 0; i < largest.size(); i++)
