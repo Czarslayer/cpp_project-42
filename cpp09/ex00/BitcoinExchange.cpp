@@ -4,13 +4,15 @@
 BitcoinExchange::BitcoinExchange()
 {
     std::fstream file;
-    file.open("offers.csv", std::ios::out | std::ios::in);
+    file.open("data.csv", std::ios::out | std::ios::in);
     if (file.is_open())
     {
         std::string line;
         while (std::getline(file, line))
         {
             std::string name = line.substr(0, line.find(','));
+            if (name == "date")
+                continue;
             double price = std::stod(line.substr(line.find(',') + 1));
             _original[name] = price;
         }
@@ -78,15 +80,15 @@ bool BitcoinExchange::checktimeformat(const std::string &name) const
     std::string year = name.substr(0, 4);
     std::string month = name.substr(5, 2);
     std::string day = name.substr(8, 2);
-    if (std::stoi(year) < 2000 || std::stoi(year) > 2020)
+    if (std::atoi(year.c_str()) < 2000 || std::atoi(year.c_str()) > 2020)
     {
         return false;
     }
-    if (std::stoi(month) < 1 || std::stoi(month) > 12)
+    if (std::atoi(month.c_str()) < 1 || std::atoi(month.c_str()) > 12)
     {
         return false;
     }
-    if (std::stoi(day) < 1 || std::stoi(day) > 31)
+    if (std::atoi(day.c_str()) < 1 || std::atoi(day.c_str()) > 31)
     {
         return false;
     }
@@ -96,25 +98,25 @@ bool BitcoinExchange::checktimeformat(const std::string &name) const
 bool BitcoinExchange::checkprice(const std::string &price) const
 {
     // check if the price is a number using find first not of
-    std::cout << "Checking |" << price << "|" <<  std::endl;
+    // std::cout << "Checking |" << price << "|" <<  std::endl;
     if (price.find_first_not_of("0123456789.") != std::string::npos)
     {
-        std::cout << "it's here 1" << std::endl;
+        // std::cout << "it's here 1" << std::endl;
         return false;
     }
     if (price.find('.') != std::string::npos)
     {
         if (price.find('.') != price.find_last_of('.'))
         {
-        std::cout << "it's here 2" << std::endl;
+        // std::cout << "it's here 2" << std::endl;
             return false;
         }
     }
     else
     {
-        if (std::stoi(price) < 0 || std::stoi(price) > 1000)
+        if (std::atoi(price.c_str()) < 0 || std::atoi(price.c_str()) > 1000)
         {
-        std::cout << "it's here 3" << std::endl;
+        // std::cout << "it's here 3" << std::endl;
             return false;
         }
     }
@@ -141,9 +143,9 @@ void BitcoinExchange::parseOffers(const std::string &filename)
                 }
                 name = line.substr(0, line.find('|') - 1);
                 //
-                if (checkprice(line.substr(line.find('|') + 1)) == true)
+                if (checkprice(line.substr(line.find('|') + 2)) == true)
                 {
-                    price = std::stod(line.substr(line.find('|') + 1));
+                    price = std::stod(line.substr(line.find('|') + 2).c_str());
                 }
                 else
                 {
@@ -167,6 +169,11 @@ void BitcoinExchange::parseOffers(const std::string &filename)
 }
 
 void BitcoinExchange::printoffers(std::string time, double price) {
+    std::map<std::string,double>:: iterator it;
+    it = _original.lower_bound(time);
+    if(it == _original.end())
+        exit(1);
     double Bprice = _original[time];
+    std::cout << Bprice << std::endl;
     std::cout << time << " => " << price << " = " << price * Bprice << std::endl;
 }
