@@ -1,5 +1,9 @@
 #include "BitcoinExchange.hpp"
 #include <fstream>
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
 
 BitcoinExchange::BitcoinExchange()
 {
@@ -49,7 +53,6 @@ int BitcoinExchange::checkbadsyntax(std::string &line)
     {
         return 0;
     }
-    // check the time format
     return 1;
 }
 
@@ -97,26 +100,31 @@ bool BitcoinExchange::checktimeformat(const std::string &name) const
 
 bool BitcoinExchange::checkprice(const std::string &price) const
 {
-    // check if the price is a number using find first not of
-    // std::cout << "Checking |" << price << "|" <<  std::endl;
     if (price.find_first_not_of("0123456789.") != std::string::npos)
     {
-        // std::cout << "it's here 1" << std::endl;
+        // check if the number is negative
+        if (price[0] == '-' && (price).find_first_not_of("0123456789.",1) == std::string::npos
+            && price.find('.') == price.find_last_of('.'))
+        {
+            std::cout << "Error : not a positive number"<< std::endl;
+            return false;
+        }
+        std::cout << "Error : bad input => " << price << std::endl;
         return false;
     }
     if (price.find('.') != std::string::npos)
     {
         if (price.find('.') != price.find_last_of('.'))
         {
-        // std::cout << "it's here 2" << std::endl;
+            std::cout << "Error : bad input => " << price << std::endl;
             return false;
         }
     }
     else
     {
-        if (std::atoi(price.c_str()) < 0 || std::atoi(price.c_str()) > 1000)
+        if (atol(price.c_str()) > 1000)
         {
-        // std::cout << "it's here 3" << std::endl;
+            std::cout << "Error : too large a number" << std::endl;
             return false;
         }
     }
@@ -142,20 +150,21 @@ void BitcoinExchange::parseOffers(const std::string &filename)
                     continue;
                 }
                 name = line.substr(0, line.find('|') - 1);
-                //
                 if (checkprice(line.substr(line.find('|') + 2)) == true)
                 {
                     price = std::stod(line.substr(line.find('|') + 2).c_str());
                 }
                 else
                 {
-                    std::cout << "bad price" << std::endl;
                     continue;
                 }
             }
             else
             {
-                std::cout << "Bad syntax" << std::endl;
+                if (line.empty() == true)
+                    continue;
+                else
+                    std::cout << "Error : bad input => " << line << std::endl;
                 continue;
             }
             printoffers(name, price);
@@ -173,7 +182,8 @@ void BitcoinExchange::printoffers(std::string time, double price) {
     it = _original.lower_bound(time);
     if(it == _original.end())
         exit(1);
-    double Bprice = _original[time];
-    std::cout << Bprice << std::endl;
+    if (it->first.compare(time) != 0)
+        it--;
+    double Bprice = it->second;
     std::cout << time << " => " << price << " = " << price * Bprice << std::endl;
 }
