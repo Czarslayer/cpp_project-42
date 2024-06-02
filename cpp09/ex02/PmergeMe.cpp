@@ -9,6 +9,26 @@
 #include <sstream>
 #include <utility>
 
+//debuger the vector print function
+void print_vector(std::vector<int> &v)
+{
+    for (size_t i = 0; i < v.size(); i++)
+    {
+        std::cout << v[i] << " ";
+    }
+    std::cout << std::endl;
+}
+
+//debug victor print function from iterator to another iterator
+void print_vector(std::vector<int>::iterator start, std::vector<int>::iterator end)
+{
+    for (std::vector<int>::iterator it = start; it != end; it++)
+    {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl;
+}
+
 // Merge helper function
 void merge(std::vector<std::pair<int, int> >& arr, int left, int mid, int right) {
     int i, j, k;
@@ -52,29 +72,44 @@ void mergeSort(std::vector<std::pair<int, int> >& arr, int left, int right) {
         merge(arr, left, mid, right);
     }
 }
-
-std::vector<int> jacob_index_generator(std::vector<int> &jacobsthals)
+#define green "\033[1;32m"
+#define red "\033[1;31m"
+#define blue "\033[1;34m"
+#define yellow "\033[1;33m"
+#define reset "\033[0m"
+std::vector<int> jacob_index_generator(std::vector<int> &jacobsthals, int size)
 {
+    std::cout << green << std::endl;
+    std::cout << "=====================<inside generator>======================" << std::endl;
+    print_vector(jacobsthals);
 
     std::vector<int> jacobsthals_indexed;
     int jacob = 0;
     for (size_t i = 0; i < jacobsthals.size(); i++)
     {
         jacob = jacobsthals[i];
-        jacobsthals_indexed.push_back(jacob);
-        while (jacob > 0 && std::find(jacobsthals_indexed.begin(), jacobsthals_indexed.end(), --jacob) == jacobsthals_indexed.end())
+        if (jacob <= size)
+            jacobsthals_indexed.push_back(jacob);
+        while (jacob > 0 && jacobsthals[i] != 1 && std::find(jacobsthals_indexed.begin(), jacobsthals_indexed.end(), --jacob) == jacobsthals_indexed.end())
         {
-            //std::cout << "pushing " << jacob << std::endl;
+            if (jacob > size)
+            {
+                continue;
+            }
+            std::cout << "pushing " << jacob << std::endl;
             jacobsthals_indexed.push_back(jacob);
             //jacob--;
         }
     }
+
+    print_vector(jacobsthals_indexed);
     // remove one 1 from the beginning of the sequence
     jacobsthals_indexed.erase(jacobsthals_indexed.begin());
-    // for(int j = 0; j < jacobsthals.size(); j++)
-    // {
-    //     std::cout << "index" << j << " is" << jacobsthals[j] << std::endl;
-    // }
+    std::cout << "removed the first 1" << std::endl;
+    print_vector(jacobsthals_indexed);
+    std::cout << std::endl;
+    std::cout << "the size of the sequence is " << size << std::endl;
+    std::cout << reset << std::endl;
     return jacobsthals_indexed;
 }
 
@@ -99,7 +134,6 @@ void recursive_sort(std::vector<int> &t, std::vector<std::pair<int,int> > &coupl
             std::swap(couples[i].first, couples[i].second);
         }
     }
-
     mergeSort(couples, 0, couples.size() - 1);
 }
 
@@ -168,70 +202,78 @@ int main(int argc, char const *argv[])
 
     // Print smallest and largest
     std::cout << "Smallest" << std::endl;
-    for (size_t i = 0; i < smallest.size(); i++)
-    {
-        std::cout << smallest[i] << " ";
-    }
-    std::cout << std::endl;
+    print_vector(smallest);
 
     std::cout << "Largest" << std::endl;
-    for (size_t i = 0; i < largest.size(); i++)
-    {
-        std::cout << largest[i] << " ";
-    }
-    std::cout << std::endl;
+    print_vector(largest);
 
     // step 3 : create a Jacobsthal sequence with the lenght of the two sequences combined
     std::vector<int> jacobsthals;
+    std::vector<int> jacobsthals_indexed;
     int jacob = 0;
-    for (size_t i = 1; i < smallest.size() + largest.size(); i++)
+    for (size_t i = 2; i < smallest.size() + largest.size(); i++)
     {
         jacob = Jacobsthal(i);
+        if (jacob > smallest.size())
+        {
+        jacobsthals.push_back(jacob);
+            break;
+        }
         jacobsthals.push_back(jacob);
     }
-    jacobsthals = jacob_index_generator(jacobsthals);
-
-    // trim the jacobsthals sequence to the size of the smallest sequence run through the sequence and remove any element that is greater than the size of the smallest sequence
-    // for (size_t i = 0; i < jacobsthals.size(); i++)
-    // {
-    //     if (jacobsthals[i] >= smallest.size())
-    //     {
-    //         jacobsthals.erase(jacobsthals.begin() + i);
-    //     }
-    // }
-
+    std::cout << "Jacobsthal" << std::endl;
+    jacobsthals_indexed = jacob_index_generator(jacobsthals, smallest.size());
+    print_vector(jacobsthals_indexed);
 
     // Print jacobian
     std::cout << "Jacobian" << std::endl;
-    for (size_t i = 0; i < jacobsthals.size(); i++)
-    {
-        std::cout << jacobsthals[i] << " ";
-    }
-    std::cout << std::endl;
+    print_vector(jacobsthals);
 
     // step 4 : insert the first element becuase it's the smallest
     largest.insert(std::upper_bound(largest.begin(), largest.end(), smallest[0]), smallest[0]);
     std::cout << "pushed the smallest " << smallest[0] << std::endl;
 
     // step 5 : insert the LARGEST sequence using the jacobian sequence to smallest sequence using upper bound and using jacob sequence as index
-    int last_jacobian = 0;
-    for (size_t i = 2; i < jacobsthals.size(); i++)
+    std::cout << yellow << "===> the insertion <===" << std::endl;
+    for (size_t i = 0; i < jacobsthals.size(); i++)
     {
         // std::cout << "Last Jacobian index " << i << std::endl;
+        std::cout << "//&&&&&&&&&//" << std::endl;
+        std::cout << "smallest size " << smallest.size() << std::endl;
+        std::cout << "largest size " << largest.size() << std::endl;
+        std::cout << "jacobsthals[i] " << jacobsthals[i] << std::endl;
+        std::cout << "//&&&&&&&&&//" << std::endl;
+
+
         if (jacobsthals[i] < smallest.size())
         {// 
             std::cout << ">>Inserting " << jacobsthals[i] << std::endl;
-            largest.insert(std::upper_bound(largest.begin(), largest.begin() + std::pow(2, jacobsthals[i]) - 1 + (i - 2), smallest[jacobsthals[i]]), smallest[jacobsthals[i]]);
+            std::cout << ">>Inserting " << smallest[jacobsthals[i]] << std::endl;
+
+            std::cout << "Searching area for upper bound" << std::endl;
+            std::cout << "calculating the upper bound for " << std::pow(2, i) - 1 << " in the largest sequence" << std::endl;
+            std::cout << "//&&&&&&&&&//" << std::endl;
+            print_vector(largest.begin(), largest.begin() + std::pow(2, i) - 1);
+            std::cout << "//&&&&&&&&&//" << std::endl;
+
+            largest.insert(std::upper_bound(largest.begin(), largest.begin() + std::pow(2, i) - 1 /*+ (i - 2)*/, smallest[jacobsthals[i]]), smallest[jacobsthals[i]]);
+
+            std::cout << "jacobsthals[i] = " << i << std::endl;
+            std::cout << std::endl;
             std::cout << "Inserting " << smallest[jacobsthals[i]] << std::endl;
             std::cout << "largest" << std::endl;
-            for (size_t i = 0; i < largest.size(); i++)
+            if (largest.size() > 0)
             {
-                std::cout << largest[i] << " ";
+                for (size_t i = 0; i < largest.size(); i++)
+                {
+                    std::cerr << "largest size: " << largest.size() << " index " << i << " = " << largest[i] << std::endl;
+                }
+                std::cout << std::endl;
+                std::cout << "===========================================" << std::endl;
             }
-            std::cout << std::endl;
-            std::cout << "===========================================" << std::endl;
         }
     }
+    std::cout << reset << std::endl;
 
     // step 4 : insert the STRUGGLING part using upper bound of the LARGEST sequence
     if (!struggling.empty())
@@ -240,13 +282,9 @@ int main(int argc, char const *argv[])
     }
 
 
-    // Print smallest
-    std::cout << "largest" << std::endl;
-    for (size_t i = 0; i < largest.size(); i++)
-    {
-        std::cout << largest[i] << " ";
-    }
-    std::cout << std::endl;
+    // Print largest
+    std::cout << "Largest" << std::endl;
+    print_vector(largest);
 
 
     

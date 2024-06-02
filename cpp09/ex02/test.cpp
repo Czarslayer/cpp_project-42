@@ -9,10 +9,10 @@
 #include <cmath>
 
 // Merge helper function
-void merge(std::vector<std::pair<int, int>>& arr, int left, int mid, int right) {
+void merge(std::vector<std::pair<int, int> >& arr, int left, int mid, int right) {
     int n1 = mid - left + 1;
     int n2 = right - mid;
-    std::vector<std::pair<int, int>> L(n1), R(n2);
+    std::vector<std::pair<int, int> > L(n1), R(n2);
 
     for (int i = 0; i < n1; i++) {
         L[i] = arr[left + i];
@@ -40,7 +40,7 @@ void merge(std::vector<std::pair<int, int>>& arr, int left, int mid, int right) 
 }
 
 // Recursive merge sort
-void mergeSort(std::vector<std::pair<int, int>>& arr, int left, int right) {
+void mergeSort(std::vector<std::pair<int, int> >& arr, int left, int right) {
     if (left < right) {
         int mid = left + (right - left) / 2;
         mergeSort(arr, left, mid);
@@ -78,7 +78,7 @@ int Jacobsthal(int n) {
     return b;
 }
 
-void recursive_sort(std::vector<std::pair<int, int>>& couples) {
+void recursive_sort(std::vector<std::pair<int, int> >& couples) {
     mergeSort(couples, 0, couples.size() - 1);
 }
 
@@ -101,7 +101,7 @@ int main(int argc, char const *argv[]) {
         t.push_back(n);
     }
 
-    std::vector<std::pair<int, int>> couples;
+    std::vector<std::pair<int, int> > couples;
     std::vector<int> struggling;
 
     if (t.size() % 2 != 0) {

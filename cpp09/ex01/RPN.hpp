@@ -18,10 +18,10 @@ class RPN {
         ~RPN();
         RPN & operator=(RPN const & other);
         RPN(const RPN & other);
-        void add_operation(void);
-        void sub_operation(void);
-        void mul_operation(void);
-        void div_operation(void);
+        bool add_operation(void);
+        bool sub_operation(void);
+        bool mul_operation(void);
+        bool div_operation(void);
         double RpnCaller(std::stringstream& name);
 };
 #endif

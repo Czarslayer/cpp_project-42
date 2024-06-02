@@ -15,67 +15,60 @@ RPN& RPN::operator=(const RPN& other){
     return *this;
 }
 
-void RPN::add_operation(void){
-    std::cout << "add" << std::endl;
+bool RPN::add_operation(void){
     if (this->mintos.size() <= 1)
         {
             std::cout << "error" << std::endl;
-            return;
+            return false;
         }
     double first = mintos.top();
     mintos.pop();
     double second = mintos.top();
     mintos.pop();
     mintos.push(second + first);
-    return;
+    return true;
 }
 
-void RPN::sub_operation(void){
-    std::cout << "sub" << std::endl;
-        std::cout << "add" << std::endl;
+bool RPN::sub_operation(void){
     if (this->mintos.size() <= 1)
         {
             std::cout << "error" << std::endl;
-            return;
+            return false;
         }
     double first = mintos.top();
     mintos.pop();
     double second = mintos.top();
     mintos.pop();
-    mintos.push(second + first);
-    return;
+    mintos.push(second - first);
+    return true;
 }
 
-void RPN::mul_operation(void){
-    std::cout << "mul" << std::endl;
-        std::cout << "add" << std::endl;
+bool RPN::mul_operation(void){
     if (this->mintos.size() <= 1)
         {
             std::cout << "error" << std::endl;
-            return;
+            return false;
         }
     double first = mintos.top();
     mintos.pop();
     double second = mintos.top();
     mintos.pop();
-    mintos.push(second + first);
-    return;
+    mintos.push(second * first);
+    return true;
 }
 
-void RPN::div_operation(void){
-    std::cout << "div" << std::endl;
-        std::cout << "add" << std::endl;
+bool RPN::div_operation(void){
     if (this->mintos.size() <= 1)
         {
-            std::cout << "error" << std::endl;
-            return;
+            std::cout << "Error" << std::endl;
+            return false;
         }
     double first = mintos.top();
     mintos.pop();
     double second = mintos.top();
     mintos.pop();
-    mintos.push(second + first);
-    return;
+    mintos.push(second / first);
+    return true;
 }
 
 bool NameChecker(std::string const &name){
@@ -88,22 +81,35 @@ bool NameChecker(std::string const &name){
 
 double RPN::RpnCaller(std::stringstream &name){
     std::string temp;
-    name >> temp ;
-    while(temp != "")
+    int i;
+    char const *c[] = {"+", "-", "*", "/"};
+    while(name >> temp)
     {
-        std::cout << temp << std::endl;
         if(NameChecker(temp) == true){
-            if (temp == "+")
-                this->add_operation();
-            else if (temp == "-")
-                this->sub_operation();
-            else if (temp == "*")
-                this->mul_operation();
-            else if (temp == "/")
-                this->div_operation();
-            else
+            for (i = 0; i < 4; i++)
             {
-                std::cout << "debug pushing " << std::endl;
+                if (temp == c[i])
+                    break;
+            }
+            switch (i)
+            {
+            case 0:
+                if(!this->add_operation())
+                    return -1;
+                break;
+            case 1:
+                if(!this->sub_operation())
+                    return -1;
+                break;
+            case 2:
+                if(!this->mul_operation())
+                    return -1;
+                break;
+            case 3:
+                if(!this->div_operation())
+                    return -1;
+                break;
+            default:
                 double test = std::stod(temp);
                 this->mintos.push(test);
             }
@@ -113,7 +119,6 @@ double RPN::RpnCaller(std::stringstream &name){
             std::cout << "Error" << std::endl;
             return -1;
         }
-        name >> temp;
     }
     return this->mintos.top();
 }
