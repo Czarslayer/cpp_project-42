@@ -1,21 +1,61 @@
+/**********************************************************
+ // -> : ██████╗ █████╗ ███████╗███████╗ █████╗ ██████╗ 
+        ██╔════╝██╔══██╗██╔════╝██╔════╝██╔══██╗██╔══██╗ 
+        ██║     ███████║█████╗  ███████╗███████║██████╔╝ 
+        ██║     ██╔══██║██╔══╝  ╚════██║██╔══██║██╔══██╗ 
+        ╚██████╗██║  ██║███████╗███████║██║  ██║██║  ██║ 
+         ╚═════╝╚═╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝
+ // -> Author:        mabahani
+ // -> Modified by:   CZAR
+ // -> Modified time: 2024-06-05 15:05:29
+ **********************************************************/
 
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <string>
-#include <cmath>
-#include <map>
-#include <set>
-#include <sstream>
-#include <utility>
-#define green "\033[1;32m"
-#define red "\033[1;31m"
-#define blue "\033[1;34m"
-#define yellow "\033[1;33m"
-#define reset "\033[0m"
-//get the index 
-int return_index(std::vector<int> &v, int value)
+#include "PmergeMe.hpp"
+
+PmergeMe::PmergeMe() {
+}
+
+PmergeMe::~PmergeMe(){
+}
+
+PmergeMe::PmergeMe(const PmergeMe& other){
+    *this = other;
+}
+
+PmergeMe& PmergeMe::operator=(const PmergeMe& other){
+    (void)other;
+    return(*this);
+}
+
+void PmergeMe::parser(int argc, char** argv)
 {
+    int n;
+    std::stringstream ss;
+    std::string temp;
+
+    for (int i = 1; i < argc; i++)
+    {
+        ss << argv[i] << " ";
+    }
+    while(ss >> temp)
+    {
+        if(temp.empty() || temp.find_first_not_of("0123456789") != std::string::npos)
+        {
+            throw std::runtime_error("Invalid input");
+        }
+        n = std::atoi(temp.c_str());
+        vec_t.push_back(n);
+        deq_t.push_back(n);
+    }
+    std::cout << "Before: ";
+    for (size_t i = 0; i < vec_t.size(); i++)
+    {
+        std::cout << vec_t[i] << " ";
+    }
+    std::cout << std::endl;
+}
+
+int PmergeMe::returnIndexVector(std::vector<int> &v, int value){
     for (size_t i = 0; i < v.size(); i++)
     {
         if (v[i] >= value && v[i-1] && v[i-1] < value)
@@ -26,28 +66,42 @@ int return_index(std::vector<int> &v, int value)
     return -1;
 }
 
-//debuger the vector print function
-void print_vector(std::vector<int> &v)
-{
-    for (size_t i = 0; i < v.size(); i++)
+std::vector<unsigned long> PmergeMe::jacobIndexGeneratorVector(std::vector<int> &jacobsthals, int size){
+    std::vector<unsigned long> jacobsthals_indexed;
+    int jacob = 0;
+    std:: cout << jacobsthals.size() << std::endl;
+    for (size_t i = 0; i < jacobsthals.size(); i++)
     {
-        std::cout << v[i] << " ";
+        jacob = jacobsthals[i];
+        if (jacob <= size)
+            jacobsthals_indexed.push_back(jacob);
+        while (jacob > 0 && jacobsthals[i] != 1 && std::find(jacobsthals_indexed.begin(), jacobsthals_indexed.end(), --jacob) == jacobsthals_indexed.end())
+        {
+            if (jacob > size)
+            {
+                continue;
+            }
+                std::cout << "debug" << std::endl;
+            jacobsthals_indexed.push_back(jacob);
+        }
     }
-    std::cout << std::endl;
+    // remove one 1 from the beginning of the sequence
+    jacobsthals_indexed.erase(jacobsthals_indexed.begin());
+    return jacobsthals_indexed;
 }
 
-//debug victor print function from iterator to another iterator
-void print_vector(std::vector<int>::iterator start, std::vector<int>::iterator end)
+int PmergeMe::Jacobsthal(int n)
 {
-    for (std::vector<int>::iterator it = start; it != end; it++)
-    {
-        std::cout << *it << " ";
-    }
-    std::cout << std::endl;
+    if (n == 0)
+        return 0;
+ 
+    if (n == 1)
+        return 1;
+ 
+    return Jacobsthal(n - 1) + 2 * Jacobsthal(n - 2);
 }
 
-// Merge helper function
-void merge(std::vector<std::pair<int, int> >& arr, int left, int mid, int right) {
+void PmergeMe::mergeVector(std::vector<std::pair<int, int> >& arr, int left, int mid, int right){
     int i, j, k;
     int n1 = mid - left + 1;
     int n2 = right - mid;
@@ -77,22 +131,136 @@ void merge(std::vector<std::pair<int, int> >& arr, int left, int mid, int right)
 
     while (j < n2) {
         arr[k++] = R[j++];
-    }
+    }   
 }
 
-// Recursive merge sort
-void mergeSort(std::vector<std::pair<int, int> >& arr, int left, int right) {
+void PmergeMe::mergeSortVector(std::vector<std::pair<int, int> >& arr, int left, int right){
     if (left < right) {
         int mid = left + (right - left) / 2;
-        mergeSort(arr, left, mid);
-        mergeSort(arr, mid + 1, right);
-        merge(arr, left, mid, right);
+        mergeSortVector(arr, left, mid);
+        mergeSortVector(arr, mid + 1, right);
+        mergeVector(arr, left, mid, right);
     }
 }
 
-std::vector<int> jacob_index_generator(std::vector<int> &jacobsthals, int size)
+void PmergeMe::recursiveSortVector(std::vector<std::pair<int,int> > &couples){
+    //not used => std::vector<int> couple;
+    for (size_t i = 0; i < couples.size(); i++)
+    {
+        if (couples[i].first < couples[i].second)
+        {
+            std::swap(couples[i].first, couples[i].second);
+        }
+    }
+    mergeSortVector(couples, 0, couples.size() - 1);
+}
+
+void print_vector(std::vector<int> &v)
 {
-    std::vector<int> jacobsthals_indexed;
+    for (size_t i = 0; i < v.size(); i++)
+    {
+        std::cout << v[i] << " ";
+    }
+    std::cout << std::endl;
+}
+
+std::vector<int>  PmergeMe::mainHubVector(){
+    //step one
+    std::vector<std::pair<int,int> > couples;
+    std::vector<int> struggling;
+
+    if (vec_t.size() % 2 != 0)
+    {
+        struggling.push_back(vec_t.back());
+        vec_t.pop_back();
+    }
+
+    // Split the sequence into couples
+    for (size_t i = 0; i < vec_t.size(); i += 2)
+    {
+        // make pairs of couples
+        couples.push_back(std::make_pair(vec_t[i], vec_t[i + 1]));
+
+    }
+    
+    // sort couples recursively ps:removed the t vector for that call it's useless
+    recursiveSortVector(couples);
+
+    //step Two
+    std::vector<int> smallest;
+    std::vector<int> largest;
+    for (size_t i = 0; i < couples.size(); i++)
+    {
+        smallest.push_back(couples[i].second);
+        largest.push_back(couples[i].first);    
+    }
+
+    print_vector(smallest);
+    print_vector(largest);
+
+    //step three
+    if(smallest.size() >= 2){       
+        std::vector<int> jacobsthals;
+        std::vector<unsigned long> jacobsthals_indexed;
+        unsigned long jacob = 0;
+        for (size_t i = 2; i < smallest.size() + largest.size(); i++)
+        {
+            jacob = Jacobsthal(i);
+            if (jacob > smallest.size())
+            {
+            jacobsthals.push_back(jacob);
+                break;
+            }
+            jacobsthals.push_back(jacob);
+        }
+        jacobsthals_indexed = jacobIndexGeneratorVector(jacobsthals, smallest.size());
+
+        //step four
+        largest.insert(std::upper_bound(largest.begin(), largest.end(), smallest[0]), smallest[0]);
+
+        //step five
+        int last_size = 0;
+        for (size_t i = 0; i < jacobsthals_indexed.size(); i++)
+        {
+            if (jacobsthals_indexed[i] <= smallest.size())
+            {
+                if (pow(2, returnIndexVector(jacobsthals,jacobsthals_indexed[i])) - 1 > largest.size())
+                    last_size = largest.size();
+                else
+                    last_size = pow(2, returnIndexVector(jacobsthals,jacobsthals_indexed[i])) - 1;
+
+                largest.insert(std::lower_bound(largest.begin(), largest.begin() + last_size, smallest[jacobsthals_indexed[i] - 1]), smallest[jacobsthals_indexed[i] - 1]);
+            }
+        }
+    } else {
+        largest.insert(std::lower_bound(largest.begin(), largest.end(), smallest[0]), smallest[0]);
+    }
+
+    //step six
+    if (!struggling.empty())
+    {
+        largest.insert(std::upper_bound(largest.begin(), largest.end(), struggling[0]), struggling[0]);
+    }
+
+    return largest;
+}
+
+//***************************************************************deque*********************************************************************
+
+
+int PmergeMe::returnIndexDeque(std::deque<int> &v, int value){
+    for (size_t i = 0; i < v.size(); i++)
+    {
+        if (v[i] >= value && v[i-1] && v[i-1] < value)
+        {
+            return (i + 1);
+        }
+    }
+    return -1;
+}
+
+std::deque<unsigned long> PmergeMe::jacobIndexGeneratorDeque(std::deque<int> &jacobsthals, int size){
+    std::deque<unsigned long> jacobsthals_indexed;
     int jacob = 0;
     for (size_t i = 0; i < jacobsthals.size(); i++)
     {
@@ -113,20 +281,50 @@ std::vector<int> jacob_index_generator(std::vector<int> &jacobsthals, int size)
     return jacobsthals_indexed;
 }
 
-int Jacobsthal(int n)
-{
-    if (n == 0)
-        return 0;
- 
-    if (n == 1)
-        return 1;
- 
-    return Jacobsthal(n - 1) + 2 * Jacobsthal(n - 2);
+void PmergeMe::mergeDeque(std::deque<std::pair<int, int> >& arr, int left, int mid, int right){
+    int i, j, k;
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+
+    std::deque<std::pair<int, int> > L(n1), R(n2);
+
+    for (i = 0; i < n1; i++) {
+        L[i] = arr[left + i];
+    }
+    for (j = 0; j < n2; j++) {
+        R[j] = arr[mid + 1 + j];
+    }
+
+    i = j = 0;
+    k = left;
+    while (i < n1 && j < n2) {
+        if (L[i].first <= R[j].first) {
+            arr[k++] = L[i++];
+        } else {
+            arr[k++] = R[j++];
+        }
+    }
+
+    while (i < n1) {
+        arr[k++] = L[i++];
+    }
+
+    while (j < n2) {
+        arr[k++] = R[j++];
+    }   
 }
 
-void recursive_sort(std::vector<int> &t, std::vector<std::pair<int,int> > &couples)
-{
-    std::vector<int> couple;
+void PmergeMe::mergeSortDeque(std::deque<std::pair<int, int> >& arr, int left, int right){
+    if (left < right) {
+        int mid = left + (right - left) / 2;
+        mergeSortDeque(arr, left, mid);
+        mergeSortDeque(arr, mid + 1, right);
+        mergeDeque(arr, left, mid, right);
+    }
+}
+
+void PmergeMe::recursiveSortDeque(std::deque<std::pair<int,int> > &couples){
+    //not used => std::deque<int> couple;
     for (size_t i = 0; i < couples.size(); i++)
     {
         if (couples[i].first < couples[i].second)
@@ -134,112 +332,84 @@ void recursive_sort(std::vector<int> &t, std::vector<std::pair<int,int> > &coupl
             std::swap(couples[i].first, couples[i].second);
         }
     }
-    mergeSort(couples, 0, couples.size() - 1);
+    mergeSortDeque(couples, 0, couples.size() - 1);
 }
 
-int main(int argc, char const *argv[])
-{
-    std::vector<int> t;
-    int n;
-    std::stringstream ss;
-    std::string temp;
 
-    // fill ss with input
-    for (int i = 1; i < argc; i++)
-    {
-        ss << argv[i] << " ";
-    }
-    // find if temp is empty or contains characters that are not numerical taking words from stringstream ss >> temp
-    while(ss >> temp)
-    {
-        if(temp.empty() || temp.find_first_not_of("0123456789") != std::string::npos)
-        {
-            std::cout << "Invalid input" << std::endl;
-            return 1;
-        }
-        
-        n = std::stoi(temp);
-        t.push_back(n);
-    }
-    // step 1 : split the sequence into couples then sort them each couple largest first then smallest
-    // if there's an odd number of elements we'll have a struggling part save it for later
-    std::vector<std::pair<int,int> > couples;
-    std::vector<int> struggling;
+std::deque<int>  PmergeMe::mainHubDeque(){
+    //step one
+    std::deque<std::pair<int,int> > couples;
+    std::deque<int> struggling;
 
-    if (t.size() % 2 != 0)
+    if (deq_t.size() % 2 != 0)
     {
-        struggling.push_back(t.back());
-        t.pop_back();
+        struggling.push_back(deq_t.back());
+        deq_t.pop_back();
     }
 
     // Split the sequence into couples
-    for (size_t i = 0; i < t.size(); i += 2)
+    for (size_t i = 0; i < deq_t.size(); i += 2)
     {
         // make pairs of couples
-        couples.push_back(std::make_pair(t[i], t[i + 1]));
+        couples.push_back(std::make_pair(deq_t[i], deq_t[i + 1]));
 
     }
     
-    // sort couples recursively
-    recursive_sort(t, couples);
-    
+    // sort couples recursively ps:removed the t deque for that call it's useless
+    recursiveSortDeque(couples);
 
-    // step 2 : create two sequences one for largest elements and one for smallest elements in each part
-    std::vector<int> smallest;
-    std::vector<int> largest;
+    //step Two
+    std::deque<int> smallest;
+    std::deque<int> largest;
     for (size_t i = 0; i < couples.size(); i++)
     {
         smallest.push_back(couples[i].second);
         largest.push_back(couples[i].first);    
     }
 
-
-    // step 3 : create a Jacobsthal sequence with the lenght of the two sequences combined
-    std::vector<int> jacobsthals;
-    std::vector<int> jacobsthals_indexed;
-    int jacob = 0;
-    for (size_t i = 2; i < smallest.size() + largest.size(); i++)
-    {
-        jacob = Jacobsthal(i);
-        if (jacob > smallest.size())
+    //step three
+    if(smallest.size() >= 2){       
+        std::vector<int> jacobsthals;
+        std::vector<unsigned long> jacobsthals_indexed;
+        unsigned long jacob = 0;
+        for (size_t i = 2; i < smallest.size() + largest.size(); i++)
         {
-        jacobsthals.push_back(jacob);
-            break;
+            jacob = Jacobsthal(i);
+            if (jacob > smallest.size())
+            {
+            jacobsthals.push_back(jacob);
+                break;
+            }
+            jacobsthals.push_back(jacob);
         }
-        jacobsthals.push_back(jacob);
-    }
-    jacobsthals_indexed = jacob_index_generator(jacobsthals, smallest.size());
+        jacobsthals_indexed = jacobIndexGeneratorVector(jacobsthals, smallest.size());
 
-    // step 4 : insert the first element becuase it's the smallest
-    largest.insert(std::upper_bound(largest.begin(), largest.end(), smallest[0]), smallest[0]);
-    std::cout << "pushed the smallest " << smallest[0] << std::endl;
+        //step four
+        largest.insert(std::upper_bound(largest.begin(), largest.end(), smallest[0]), smallest[0]);
 
-    // step 5 : insert the LARGEST sequence using the jacobian sequence to smallest sequence using upper bound and using jacob sequence as index
-    int last_size = 0;
-    for (size_t i = 0; i < jacobsthals_indexed.size(); i++)
-    {
-        if (jacobsthals_indexed[i] <= smallest.size())
+        //step five
+        int last_size = 0;
+        for (size_t i = 0; i < jacobsthals_indexed.size(); i++)
         {
-            if (pow(2, return_index(jacobsthals,jacobsthals_indexed[i])) - 1 > largest.size())
-                last_size = largest.size();
-            else
-                last_size = pow(2, return_index(jacobsthals,jacobsthals_indexed[i])) - 1;
+            if (jacobsthals_indexed[i] <= smallest.size())
+            {
+                if (pow(2, returnIndexVector(jacobsthals,jacobsthals_indexed[i])) - 1 > largest.size())
+                    last_size = largest.size();
+                else
+                    last_size = pow(2, returnIndexVector(jacobsthals,jacobsthals_indexed[i])) - 1;
 
-            largest.insert(std::lower_bound(largest.begin(), largest.begin() + last_size, smallest[jacobsthals_indexed[i] - 1]), smallest[jacobsthals_indexed[i] - 1]);
+                largest.insert(std::lower_bound(largest.begin(), largest.begin() + last_size, smallest[jacobsthals_indexed[i] - 1]), smallest[jacobsthals_indexed[i] - 1]);
+            }
         }
+    } else {
+        largest.insert(std::lower_bound(largest.begin(), largest.end(), smallest[0]), smallest[0]);
     }
 
-    // step 4 : insert the STRUGGLING part using upper bound of the LARGEST sequence
+    //step six
     if (!struggling.empty())
     {
         largest.insert(std::upper_bound(largest.begin(), largest.end(), struggling[0]), struggling[0]);
     }
 
-    // Print largest
-    std::cout << "Largest" << std::endl;
-    print_vector(largest);
-
-
-    
-    return 0;
+    return largest;
 }
