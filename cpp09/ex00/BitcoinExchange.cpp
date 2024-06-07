@@ -12,10 +12,6 @@
 
 #include "BitcoinExchange.hpp"
 #include <fstream>
-#include <iostream>
-#include <string>
-#include <vector>
-#include <map>
 
 BitcoinExchange::BitcoinExchange()
 {
@@ -29,7 +25,7 @@ BitcoinExchange::BitcoinExchange()
             std::string name = line.substr(0, line.find(','));
             if (name == "date")
                 continue;
-            double price = std::stod(line.substr(line.find(',') + 1));
+            double price = StrToDouble(line.substr(line.find(',') + 1).c_str());
             _original[name] = price;
         }
         file.close();
@@ -68,9 +64,10 @@ int BitcoinExchange::checkbadsyntax(std::string &line)
     return 1;
 }
 
-bool BitcoinExchange::checktimeformat(const std::string &name) const
+bool BitcoinExchange::checktimeformat(std::string &name)
 {
-
+    name = name.erase(0,name.find_first_not_of(" \t"));
+    name = name.erase(name.find_last_not_of(" \t") + 1);
     if (name.size() != 10)
     {
         return false;
@@ -112,29 +109,42 @@ bool BitcoinExchange::checktimeformat(const std::string &name) const
 
 bool BitcoinExchange::checkprice(const std::string &price) const
 {
-    if (price.find_first_not_of("0123456789.") != std::string::npos)
+    std::string temp;
+    if(price[0] == ' ')
+         temp = price.substr(price.find_first_not_of(" \t"));
+    else
+         temp = price;
+    if (temp.find_first_not_of("0123456789.") != std::string::npos)
     {
         // check if the number is negative
-        if (price[0] == '-' && (price).find_first_not_of("0123456789.",1) == std::string::npos
-            && price.find('.') == price.find_last_of('.'))
+        if (temp[0] == '-' && (temp).find_first_not_of("0123456789.",1) == std::string::npos
+            && temp.find('.') == temp.find_last_of('.'))
         {
             std::cout << "Error : not a positive number"<< std::endl;
             return false;
         }
-        std::cout << "Error : bad input => " << price << std::endl;
-        return false;
-    }
-    if (price.find('.') != std::string::npos)
-    {
-        if (price.find('.') != price.find_last_of('.'))
+        // check if he gived a positive
+        if (temp[0] == '+' && (temp).find_first_not_of("0123456789.",1) == std::string::npos
+            && temp.find('.') == temp.find_last_of('.'))
         {
-            std::cout << "Error : bad input => " << price << std::endl;
+            temp = temp.substr(1);
+
+        } else {
+            std::cout << "Error : bad input => " << temp << std::endl;
+            return false;
+        }
+    }
+    if (temp.find('.') != std::string::npos)
+    {
+        if (temp.find('.') != temp.find_last_of('.'))
+        {
+            std::cout << "Error : bad input => " << temp << std::endl;
             return false;
         }
     }
     else
     {
-        if (atol(price.c_str()) > 1000)
+        if (atol(temp.c_str()) > 1000)
         {
             std::cout << "Error : too large a number" << std::endl;
             return false;
@@ -146,33 +156,26 @@ bool BitcoinExchange::checkprice(const std::string &price) const
 void BitcoinExchange::parseOffers(const std::string &filename)
 {
     std::fstream file;
-    file.open(filename, std::ios::out | std::ios::in);
+    file.open(filename.c_str(), std::ios::out | std::ios::in);
     if (file.is_open())
     {
         std::string line;
         std::string name;
         double price;
-        while (std::getline(file, line))
-        {
-            if (checkbadsyntax(line) == 1)
-            {
-                if (checktimeformat(line.substr(0, line.find('|') - 1)) == false)
-                {
+        while (std::getline(file, line)) {
+            if (checkbadsyntax(line) == 1) {
+                std::string date = line.substr(0, line.find('|'));
+                if (checktimeformat(date) == false) {
                     std::cout << "Bad time format" << std::endl;
                     continue;
                 }
-                name = line.substr(0, line.find('|') - 1);
-                if (checkprice(line.substr(line.find('|') + 2)) == true)
-                {
-                    price = std::stod(line.substr(line.find('|') + 2).c_str());
+                name = date;
+                if (checkprice(line.substr(line.find('|') + 1)) == true) {
+                    price = StrToDouble(line.substr(line.find('|') + 1).c_str());
                 }
                 else
-                {
                     continue;
-                }
-            }
-            else
-            {
+            } else {
                 if (line.empty() == true)
                     continue;
                 else
@@ -198,4 +201,30 @@ void BitcoinExchange::printoffers(std::string time, double price) {
         it--;
     double Bprice = it->second;
     std::cout << time << " => " << price << " = " << price * Bprice << std::endl;
+}
+
+double BitcoinExchange::StrToDouble(std::string TheString) {
+    std::stringstream ss;
+    double var;
+    ss << TheString;
+    ss >> var;
+    return var;
+}
+
+void itos(int theNumber, std::string &date)
+{
+    std::stringstream ss;
+    ss << theNumber;
+    ss >> date;
+}
+
+std::string const BitcoinExchange::GTOT() {
+    time_t now = time(0);
+    tm  *ltm = localtime(&now);
+    std::string y, m, d;
+    itos(1900 + ltm->tm_year, y);
+    itos(1 + ltm->tm_mon , m);
+    itos(ltm->tm_mday, d);
+    const std::string all(y + "-" + (m.length()==1 ? "0"+m : m) + "-" + (d.length() == 1 ? "0"+d : d));
+    return (all);
 }

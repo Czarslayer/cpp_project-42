@@ -17,7 +17,8 @@
 #include <algorithm>
 #include <string>
 #include <map>
-
+#include <stdlib.h>
+#include <sstream>
 class BitcoinExchange
 {
 public:
@@ -27,9 +28,11 @@ public:
     BitcoinExchange &operator=(const BitcoinExchange &other);
     void parseOffers(const std::string &filename);
     int checkbadsyntax(std::string &line);
-    bool checktimeformat(const std::string &name) const;
+    bool checktimeformat( std::string &name);
     bool checkprice(const std::string &price) const;
     void printoffers(std::string time, double price);
+    std::string const GTOT();
+    double StrToDouble(std::string TheString);
 
 private:
     // std::map<std::string, double> _offers;
