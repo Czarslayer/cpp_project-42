@@ -13,6 +13,8 @@
 #include "BitcoinExchange.hpp"
 #include <fstream>
 
+#include <ctime>
+
 BitcoinExchange::BitcoinExchange()
 {
     std::fstream file;
@@ -61,6 +63,9 @@ int BitcoinExchange::checkbadsyntax(std::string &line)
     {
         return 0;
     }
+    //------------------------------------------------
+    if(line == "date | value")
+        return 0;
     return 1;
 }
 
@@ -92,7 +97,7 @@ bool BitcoinExchange::checktimeformat(std::string &name)
     std::string year = name.substr(0, 4);
     std::string month = name.substr(5, 2);
     std::string day = name.substr(8, 2);
-    if (std::atoi(year.c_str()) < 2000 || std::atoi(year.c_str()) > 2020)
+    if (std::atoi(year.c_str()) < 2009)
     {
         return false;
     }
@@ -102,6 +107,15 @@ bool BitcoinExchange::checktimeformat(std::string &name)
     }
     if (std::atoi(day.c_str()) < 1 || std::atoi(day.c_str()) > 31)
     {
+        return false;
+    }
+//    std::cout << GTOT() << std::endl;
+    if(name.compare(GTOT()) > 0) {
+        std::cout << "your date is in the future: ";
+        return false;
+    }
+    if(name.compare("2009-01-02") < 0) {
+        std::cout << "No data for the input date: ";
         return false;
     }
     return true;
@@ -166,7 +180,7 @@ void BitcoinExchange::parseOffers(const std::string &filename)
             if (checkbadsyntax(line) == 1) {
                 std::string date = line.substr(0, line.find('|'));
                 if (checktimeformat(date) == false) {
-                    std::cout << "Bad time format" << std::endl;
+                    std::cout << "Bad time => "<< date << std::endl;
                     continue;
                 }
                 name = date;
@@ -176,9 +190,7 @@ void BitcoinExchange::parseOffers(const std::string &filename)
                 else
                     continue;
             } else {
-                if (line.empty() == true)
-                    continue;
-                else
+                if (line.empty() != true && line.compare("date | value") != 0)
                     std::cout << "Error : bad input => " << line << std::endl;
                 continue;
             }
@@ -195,9 +207,7 @@ void BitcoinExchange::parseOffers(const std::string &filename)
 void BitcoinExchange::printoffers(std::string time, double price) {
     std::map<std::string,double>:: iterator it;
     it = _original.lower_bound(time);
-    if(it == _original.end())
-        exit(1);
-    if (it->first.compare(time) != 0)
+    if(it->first != time)
         it--;
     double Bprice = it->second;
     std::cout << time << " => " << price << " = " << price * Bprice << std::endl;
