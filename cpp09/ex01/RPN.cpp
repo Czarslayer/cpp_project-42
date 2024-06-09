@@ -11,7 +11,7 @@
  **********************************************************/
 
 #include "RPN.hpp"
-#include <sstream>
+
 RPN::RPN(){
 }
 
@@ -26,6 +26,7 @@ RPN& RPN::operator=(const RPN& other){
     this->mintos = other.mintos;
     return *this;
 }
+
 
 bool RPN::add_operation(void){
     if (this->mintos.size() <= 1)
@@ -88,7 +89,51 @@ bool NameChecker(std::string const &name){
         return true;
     if (name.find_first_not_of("0123456789") == std::string::npos)
         return true;
+    std::cout << name << std::endl;
     return false;
+}
+
+double strToDouble(std::string test){
+    std::stringstream ss;
+    double var;
+    ss << test;
+    ss >> var;
+    return var;
+}
+double RPN::rpn(std::stringstream & tokens) {
+    std::string token;
+    try {
+        while (tokens >> token) {
+            if (token == "+" || token == "-" || token == "*" || token == "/") {
+                if (mintos.size() < 2) {
+                    throw std::runtime_error("Error size");
+                }
+                int b = mintos.top();
+                mintos.pop();
+                int a = mintos.top();
+                mintos.pop();
+
+                if (token == "+")
+                    mintos.push(a + b);
+                if (token == "-")
+                    mintos.push(a - b);
+                if (token == "*")
+                    mintos.push(a * b);
+                if (token == "/")
+                    mintos.push(a / b);
+
+            } else {
+                if (token.find_first_not_of("0123456789") == std::string::npos)
+                    mintos.push(strToDouble(token));
+                else
+                    throw std::runtime_error("Error number");
+            }
+        }
+        return mintos.top();
+    } catch (...) {
+        std::cerr << "Error" << std::endl;
+        return -1;
+    }
 }
 
 double RPN::RpnCaller(std::stringstream &name){
@@ -122,7 +167,7 @@ double RPN::RpnCaller(std::stringstream &name){
                     return -1;
                 break;
             default:
-                double test = std::stod(temp);
+                double test = strToDouble(temp);
                 this->mintos.push(test);
             }
         }

@@ -12,6 +12,9 @@
 
 #include "RPN.hpp"
 
+// still has another method
+//to do:
+// add negative numbers
 
 int main(int ac, char **av)
 {
@@ -26,7 +29,10 @@ int main(int ac, char **av)
     for (int i = 1; i < ac; i++)
         ss << " " << av[i];
     double res = rpn.RpnCaller(ss);
+    double res1 = rpn.rpn(ss);
     if(res != -1)
         std::cout << res << std::endl;
+    if(res1 != -1)
+        std::cout << res1 << std::endl;
     return 0;
 }

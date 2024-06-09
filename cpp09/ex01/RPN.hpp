@@ -14,10 +14,9 @@
 #define RPN_HPP
 
 #include <iostream>
-#include <string>
-#include <vector>
-#include <stack>
 #include <sstream>
+#include <string>
+#include <stack>
 
 using namespace std;
 
@@ -30,6 +29,7 @@ class RPN {
         ~RPN();
         RPN & operator=(RPN const & other);
         RPN(const RPN & other);
+        double  rpn(std::stringstream & tokens);
         bool add_operation(void);
         bool sub_operation(void);
         bool mul_operation(void);
