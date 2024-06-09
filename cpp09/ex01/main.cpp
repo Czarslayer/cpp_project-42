@@ -12,27 +12,23 @@
 
 #include "RPN.hpp"
 
-// still has another method
-//to do:
-// add negative numbers
-
 int main(int ac, char **av)
 {
     RPN rpn;
-    std::string str;
     std::stringstream ss;
-    if (ac == 1)
-    {
-        std::cout << "No arguments" << std::endl;
-        return 0;
-    }
-    for (int i = 1; i < ac; i++)
-        ss << " " << av[i];
-    double res = rpn.RpnCaller(ss);
-    double res1 = rpn.rpn(ss);
-    if(res != -1)
+    try {
+        if (ac == 1) {
+            std::cout << "Usage: ./RPN \"your numbers\"" << std::endl;
+            std::cout << "      > Ps: (*)< will be considered a\n              wildcard without quotes" << std::endl;
+            std::cout << "      > no decimals or brakets" << std::endl;
+            return 0;
+        }
+        for (int i = 1; i < ac; i++)
+            ss << " " << av[i];
+        double res = rpn.rpn(ss);
         std::cout << res << std::endl;
-    if(res1 != -1)
-        std::cout << res1 << std::endl;
+    } catch (std::exception &e){
+        std::cout << e.what() << std::endl;
+    }
     return 0;
 }

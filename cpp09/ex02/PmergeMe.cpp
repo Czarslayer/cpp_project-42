@@ -27,6 +27,17 @@ PmergeMe& PmergeMe::operator=(const PmergeMe& other){
     return(*this);
 }
 
+int strToDouble(std::string test){
+    std::stringstream ss;
+    double var;
+    ss << test;
+    ss >> var;
+    if (var > 2147483647)
+        throw std::runtime_error("to big number");
+    return var;
+}
+
+
 void PmergeMe::parser(int argc, char** argv)
 {
     int n;
@@ -41,9 +52,10 @@ void PmergeMe::parser(int argc, char** argv)
     {
         if(temp.empty() || temp.find_first_not_of("0123456789") != std::string::npos)
         {
-            throw std::runtime_error("Invalid input");
+            if(!temp.empty() && !(temp[0] == '+' && (temp).find_first_not_of("0123456789", 1) == std::string::npos))
+                throw std::runtime_error("Invalid input");
         }
-        n = std::atoi(temp.c_str());
+        n = strToDouble(temp);
         vec_t.push_back(n);
         deq_t.push_back(n);
     }

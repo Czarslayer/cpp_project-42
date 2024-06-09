@@ -30,10 +30,7 @@ class RPN {
         RPN & operator=(RPN const & other);
         RPN(const RPN & other);
         double  rpn(std::stringstream & tokens);
-        bool add_operation(void);
-        bool sub_operation(void);
-        bool mul_operation(void);
-        bool div_operation(void);
-        double RpnCaller(std::stringstream& name);
+        bool NameChecker(std::string const &name);
+        double strToDouble(std::string test);
 };
 #endif
