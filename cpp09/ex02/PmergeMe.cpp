@@ -27,7 +27,7 @@ PmergeMe& PmergeMe::operator=(const PmergeMe& other){
     return(*this);
 }
 
-int strToDouble(std::string test){
+int PmergeMe::strToDouble(std::string test){
     std::stringstream ss;
     double var;
     ss << test;

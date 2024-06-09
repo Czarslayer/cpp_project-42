@@ -12,6 +12,7 @@
 
 #include "BitcoinExchange.hpp"
 #include <fstream>
+#include <iomanip>
 
 #include <ctime>
 
@@ -195,7 +196,9 @@ void BitcoinExchange::printoffers(std::string time, double price) {
     if(it->first != time)
         it--;
     double Bprice = it->second;
-    std::cout << time << " => " << price << " = " << price * Bprice << std::endl;
+//    std::cout << "the date: " << it->first << " the price: " << Bprice << std::endl;
+//    std::cout << "price given: " << price << std::endl;
+    std::cout << time << " => "<< std::fixed << std::setprecision(2)  << price << " = " << price * Bprice << std::endl;
 }
 
 double BitcoinExchange::StrToDouble(std::string TheString) const {
