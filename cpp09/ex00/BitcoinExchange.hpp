@@ -32,7 +32,7 @@ public:
     bool checkprice(const std::string &price) const;
     void printoffers(std::string time, double price);
     std::string const GTOT();
-    double StrToDouble(std::string TheString);
+    double StrToDouble(std::string TheString) const;
 
 private:
     // std::map<std::string, double> _offers;

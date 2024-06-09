@@ -109,7 +109,6 @@ bool BitcoinExchange::checktimeformat(std::string &name)
     {
         return false;
     }
-//    std::cout << GTOT() << std::endl;
     if(name.compare(GTOT()) > 0) {
         std::cout << "your date is in the future: ";
         return false;
@@ -130,14 +129,12 @@ bool BitcoinExchange::checkprice(const std::string &price) const
          temp = price;
     if (temp.find_first_not_of("0123456789.") != std::string::npos)
     {
-        // check if the number is negative
         if (temp[0] == '-' && (temp).find_first_not_of("0123456789.",1) == std::string::npos
             && temp.find('.') == temp.find_last_of('.'))
         {
             std::cout << "Error : not a positive number"<< std::endl;
             return false;
         }
-        // check if he gived a positive
         if (temp[0] == '+' && (temp).find_first_not_of("0123456789.",1) == std::string::npos
             && temp.find('.') == temp.find_last_of('.'))
         {
@@ -148,21 +145,9 @@ bool BitcoinExchange::checkprice(const std::string &price) const
             return false;
         }
     }
-    if (temp.find('.') != std::string::npos)
-    {
-        if (temp.find('.') != temp.find_last_of('.'))
-        {
-            std::cout << "Error : bad input => " << temp << std::endl;
-            return false;
-        }
-    }
-    else
-    {
-        if (atol(temp.c_str()) > 1000)
-        {
-            std::cout << "Error : too large a number" << std::endl;
-            return false;
-        }
+    if (StrToDouble(temp) > 1000) {
+        std::cout << "Error: too large a number" << std::endl;
+        return false;
     }
     return true;
 }
@@ -213,7 +198,7 @@ void BitcoinExchange::printoffers(std::string time, double price) {
     std::cout << time << " => " << price << " = " << price * Bprice << std::endl;
 }
 
-double BitcoinExchange::StrToDouble(std::string TheString) {
+double BitcoinExchange::StrToDouble(std::string TheString) const {
     std::stringstream ss;
     double var;
     ss << TheString;
