@@ -38,8 +38,6 @@ double RPN::strToDouble(std::string test){
 bool RPN::NameChecker(std::string const &name){
     if (name.find_first_not_of("0123456789") == std::string::npos)
         return true;
-//    if((name[0] == '+' || name[0] == '-') && (name).find_first_not_of("0123456789", 1) == std::string::npos )
-//        return true;
     std::cout <<">>|"<< name << "|<<" << std::endl;
     return false;
 }
