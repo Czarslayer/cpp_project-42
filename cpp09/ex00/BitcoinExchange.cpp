@@ -18,12 +18,13 @@
 
 BitcoinExchange::BitcoinExchange()
 {
+    this->flag = 0;
     std::fstream file;
     file.open("data.csv", std::ios::out | std::ios::in);
     if (file.is_open())
     {
         std::string line;
-        while (std::getline(file, line))
+        while (std::getline(file, line) && !line.empty() )
         {
             std::string name = line.substr(0, line.find(','));
             if (name == "date")
@@ -65,8 +66,6 @@ int BitcoinExchange::checkbadsyntax(std::string &line)
         return 0;
     }
     //------------------------------------------------
-    if(line == "date | value")
-        return 0;
     return 1;
 }
 
@@ -162,6 +161,14 @@ void BitcoinExchange::parseOffers(const std::string &filename)
         std::string line;
         std::string name;
         double price;
+        if(std::getline(file, line))
+        {
+            if(line != "date | value") {
+                std::cout << " >> Error: bad format\n should include the format header \"date | value\"" << std::endl;
+                file.close();
+                return;
+            }
+        }
         while (std::getline(file, line)) {
             if (checkbadsyntax(line) == 1) {
                 std::string date = line.substr(0, line.find('|'));
@@ -193,12 +200,10 @@ void BitcoinExchange::parseOffers(const std::string &filename)
 void BitcoinExchange::printoffers(std::string time, double price) {
     std::map<std::string,double>:: iterator it;
     it = _original.lower_bound(time);
-    if(it->first != time)
+    if(it->first != time && it != _original.begin() )
         it--;
     double Bprice = it->second;
-//    std::cout << "the date: " << it->first << " the price: " << Bprice << std::endl;
-//    std::cout << "price given: " << price << std::endl;
-    std::cout << time << " => "<< std::fixed << std::setprecision(2)  << price << " = " << price * Bprice << std::endl;
+    std::cout << time << " => " << price << " = " << price * Bprice  << std::endl;
 }
 
 double BitcoinExchange::StrToDouble(std::string TheString) const {

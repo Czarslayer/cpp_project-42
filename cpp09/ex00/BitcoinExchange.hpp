@@ -37,6 +37,7 @@ public:
 private:
     // std::map<std::string, double> _offers;
     std::map<std::string, double> _original;
+    int flag;
 };
 
 #endif
