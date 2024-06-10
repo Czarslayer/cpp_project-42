@@ -28,6 +28,7 @@ class PmergeMe {
     private:
         std::vector<int> vec_t;
         std::deque<int> deq_t;
+        int isSorted;
     public:
         PmergeMe();
         ~PmergeMe();

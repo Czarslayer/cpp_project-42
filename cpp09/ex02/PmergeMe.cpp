@@ -13,6 +13,7 @@
 #include "PmergeMe.hpp"
 
 PmergeMe::PmergeMe() {
+    this->isSorted = 0;
 }
 
 PmergeMe::~PmergeMe(){
@@ -37,6 +38,14 @@ int PmergeMe::strToDouble(std::string test){
     return var;
 }
 
+bool isVecSorted(const std::vector<int>& vec) {
+    for (size_t i = 1; i < vec.size(); i++)
+    {
+        if(vec[i] < vec[i - 1])
+            return false;
+    }
+    return true;
+}
 
 void PmergeMe::parser(int argc, char** argv)
 {
@@ -59,6 +68,8 @@ void PmergeMe::parser(int argc, char** argv)
         vec_t.push_back(n);
         deq_t.push_back(n);
     }
+    if (isVecSorted(vec_t))
+        this->isSorted = 1;
     std::cout << "Before: ";
     for (size_t i = 0; i < vec_t.size(); i++)
     {
@@ -177,6 +188,9 @@ void print_vector(std::vector<int> &v)
 }
 
 std::vector<int>  PmergeMe::mainHubVector(){
+    //check if already sorted
+    if(isSorted == 1)
+        return vec_t;
     //step one
     std::vector<std::pair<int,int> > couples;
     std::vector<int> struggling;
@@ -349,6 +363,9 @@ void PmergeMe::recursiveSortDeque(std::deque<std::pair<int,int> > &couples){
 
 
 std::deque<int>  PmergeMe::mainHubDeque(){
+    //check if already sorted
+    if(isSorted == 1)
+        return deq_t;
     //step one
     std::deque<std::pair<int,int> > couples;
     std::deque<int> struggling;
