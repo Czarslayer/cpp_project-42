@@ -37,7 +37,6 @@ int main(int argc, char **argv)
     std::vector<int> vectorOne = fordJhonson.mainHubVector();
     gettimeofday(&endTimeVector, NULL);
     long durationVector = (endTimeVector.tv_sec - startTimeVector.tv_sec) * 1000000 + (endTimeVector.tv_usec - startTimeVector.tv_usec);
-
     // Timing for std::deque
     gettimeofday(&startTimeDeque, NULL);
     std::deque<int> dequeOne = fordJhonson.mainHubDeque();

@@ -92,7 +92,6 @@ int PmergeMe::returnIndexVector(std::vector<int> &v, int value){
 std::vector<unsigned long> PmergeMe::jacobIndexGeneratorVector(std::vector<int> &jacobsthals, int size){
     std::vector<unsigned long> jacobsthals_indexed;
     int jacob = 0;
-    std:: cout << jacobsthals.size() << std::endl;
     for (size_t i = 0; i < jacobsthals.size(); i++)
     {
         jacob = jacobsthals[i];
@@ -104,7 +103,6 @@ std::vector<unsigned long> PmergeMe::jacobIndexGeneratorVector(std::vector<int> 
             {
                 continue;
             }
-                std::cout << "debug" << std::endl;
             jacobsthals_indexed.push_back(jacob);
         }
     }
@@ -221,8 +219,8 @@ std::vector<int>  PmergeMe::mainHubVector(){
         largest.push_back(couples[i].first);    
     }
 
-    print_vector(smallest);
-    print_vector(largest);
+    // print_vector(smallest);
+    // print_vector(largest);
 
     //step three
     if(smallest.size() >= 2){       
