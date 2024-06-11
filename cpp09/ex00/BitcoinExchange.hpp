@@ -19,6 +19,8 @@
 #include <map>
 #include <stdlib.h>
 #include <sstream>
+#include <fstream>
+#include <ctime>
 class BitcoinExchange
 {
 public:

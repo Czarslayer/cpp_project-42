@@ -11,10 +11,6 @@
  **********************************************************/
 
 #include "BitcoinExchange.hpp"
-#include <fstream>
-#include <iomanip>
-
-#include <ctime>
 
 BitcoinExchange::BitcoinExchange()
 {
@@ -65,7 +61,6 @@ int BitcoinExchange::checkbadsyntax(std::string &line)
     {
         return 0;
     }
-    //------------------------------------------------
     return 1;
 }
 
