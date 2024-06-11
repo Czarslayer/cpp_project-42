@@ -240,7 +240,7 @@ std::vector<int>  PmergeMe::mainHubVector(){
         jacobsthals_indexed = jacobIndexGeneratorVector(jacobsthals, smallest.size());
 
         //step four
-        largest.insert(std::upper_bound(largest.begin(), largest.end(), smallest[0]), smallest[0]);
+        largest.insert(std::lower_bound(largest.begin(), largest.end(), smallest[0]), smallest[0]);
 
         //step five
         int last_size = 0;
@@ -263,7 +263,7 @@ std::vector<int>  PmergeMe::mainHubVector(){
     //step six
     if (!struggling.empty())
     {
-        largest.insert(std::upper_bound(largest.begin(), largest.end(), struggling[0]), struggling[0]);
+        largest.insert(std::lower_bound(largest.begin(), largest.end(), struggling[0]), struggling[0]);
     }
 
     return largest;
@@ -412,7 +412,7 @@ std::deque<int>  PmergeMe::mainHubDeque(){
         jacobsthals_indexed = jacobIndexGeneratorVector(jacobsthals, smallest.size());
 
         //step four
-        largest.insert(std::upper_bound(largest.begin(), largest.end(), smallest[0]), smallest[0]);
+        largest.insert(std::lower_bound(largest.begin(), largest.end(), smallest[0]), smallest[0]);
 
         //step five
         int last_size = 0;
@@ -435,7 +435,7 @@ std::deque<int>  PmergeMe::mainHubDeque(){
     //step six
     if (!struggling.empty())
     {
-        largest.insert(std::upper_bound(largest.begin(), largest.end(), struggling[0]), struggling[0]);
+        largest.insert(std::lower_bound(largest.begin(), largest.end(), struggling[0]), struggling[0]);
     }
 
     return largest;
